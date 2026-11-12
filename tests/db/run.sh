@@ -3,7 +3,8 @@
 #   1. supabase/schema.sql installs cleanly on an empty database
 #   2. every file in supabase/migrations/ is a no-op on top of it, i.e.
 #      schema.sql already contains each migration and migrations can be rerun
-#   3. tests/db/integrity.sql: constraints, restore, access rights
+#   3. scripts/migrate.mjs sets up an empty database to the same definition
+#   4. tests/db/integrity.sql: constraints, restore, access rights
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 : "${PGHOST:?Set PGHOST to the test PostgreSQL server}"
@@ -41,5 +42,20 @@ if ! diff -u "$work_dir/schema.txt" "$work_dir/migrated.txt"; then
   echo "Apply the same change to supabase/schema.sql (lines marked + above are missing from it)." >&2
   exit 1
 fi
+
+# scripts/migrate.mjs (run by `npm run build`) must reach the same definition
+# on an empty database, and change nothing when run again.
+auto_db="${test_db}_auto"
+createdb "$auto_db"
+trap 'dropdb --if-exists "$test_db"; dropdb --if-exists "$auto_db"; rm -rf "$work_dir"' EXIT
+auto_url="postgres://${PGUSER}:${PGPASSWORD:-}@${PGHOST}:${PGPORT:-5432}/${auto_db}"
+for run in first second; do
+  POSTGRES_URL_NON_POOLING="$auto_url" node scripts/migrate.mjs
+  PGDATABASE="$auto_db" psql -X -At -v ON_ERROR_STOP=1 -f tests/db/fingerprint.sql > "$work_dir/auto.txt"
+  if ! diff -u "$work_dir/schema.txt" "$work_dir/auto.txt"; then
+    echo "FAIL: scripts/migrate.mjs ($run run) does not produce the definition in supabase/schema.sql." >&2
+    exit 1
+  fi
+done
 
 psql -X -v ON_ERROR_STOP=1 -f tests/db/integrity.sql

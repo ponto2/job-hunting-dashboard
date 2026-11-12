@@ -17,21 +17,37 @@
 
 ## セットアップ
 
-自分専用のダッシュボードを作る手順です。ブラウザだけで完了し、PCへのインストールは不要です。15分ほどで終わります。
+自分専用のダッシュボードを作る手順です。ブラウザだけで完了し、PCへのインストールは不要です。
 
-用意するアカウントは次の3つです。いずれも無料プランで使えます。
-
-- [GitHub](https://github.com/)
-- [Supabase](https://supabase.com/)（データの保存先）
-- [Vercel](https://vercel.com/)（アプリの公開先）
+用意するアカウントは[GitHub](https://github.com/)と[Vercel](https://vercel.com/)（アプリの公開先）です。データの保存先の[Supabase](https://supabase.com/)は、途中の画面から作れます。いずれも無料プランで使えます。
 
 AIによる企業リサーチも使う場合は、[Google AI Studio](https://aistudio.google.com/)でAPIキーを発行します。あとから追加できます。
 
-### 1. リポジトリをForkする
+### かんたんセットアップ（おすすめ）
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fponto2%2Fjob-hunting-dashboard&project-name=job-hunting-dashboard&repository-name=job-hunting-dashboard&env=AUTH_PASSWORD&envDescription=%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E7%94%BB%E9%9D%A2%E3%81%A7%E5%85%A5%E5%8A%9B%E3%81%99%E3%82%8B%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%A7%E3%81%99%E3%80%82%E8%87%AA%E5%88%86%E3%81%A7%E6%B1%BA%E3%82%81%E3%81%9F%E3%80%81%E6%8E%A8%E6%B8%AC%E3%81%95%E3%82%8C%E3%81%AB%E3%81%8F%E3%81%84%E3%82%82%E3%81%AE%E3%82%92%E5%85%A5%E3%82%8C%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82&envLink=https%3A%2F%2Fgithub.com%2Fponto2%2Fjob-hunting-dashboard%23%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%81%AE%E4%B8%80%E8%A6%A7&stores=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22supabase%22%2C%22productSlug%22%3A%22supabase%22%7D%5D)
+
+1. 上のボタンを押し、GitHubアカウントでVercelにログインします。
+2. 画面の案内に従って、自分のGitHubにリポジトリのコピーを作ります。
+3. Supabaseを追加する画面が出たら、案内に従ってデータベースを作ります。リージョンは`Northeast Asia (Tokyo)`が近くて速いです。
+4. `AUTH_PASSWORD`に、自分で決めたログイン用パスワードを入れます。
+5. Deployを押します。
+
+データベースのテーブルは、最初のデプロイのときに自動で作られます。SQLを実行する必要はありません。発行されたURLを開き、`AUTH_PASSWORD`でログインして、企業を1社追加できれば完了です。
+
+`AUTH_PASSWORD`は、このアプリを開ける唯一の鍵です。URLを知っている人なら誰でもログイン画面にたどり着けるため、長く推測されにくいものにしてください。
+
+企業リサーチを使う場合は、VercelのSettings → Environment Variablesに`GEMINI_API_KEY`を追加し、DeploymentsからRedeployします。
+
+### 手動でセットアップする
+
+Supabaseのプロジェクトを自分で作りたい場合や、ボタンでうまくいかない場合の手順です。15分ほどで終わります。
+
+#### 1. リポジトリをForkする
 
 このページ右上のForkを押し、自分のGitHubアカウントにコピーを作ります。あとで元リポジトリの更新を取り込めるよう、Forkがおすすめです。
 
-### 2. Supabaseでデータベースを作る
+#### 2. Supabaseでデータベースを作る
 
 1. [Supabase](https://supabase.com/)にログインし、New projectでプロジェクトを作ります。リージョンは`Northeast Asia (Tokyo)`が近くて速いです。
 2. 左メニューのSQL Editorを開きます。
@@ -48,7 +64,7 @@ AIによる企業リサーチも使う場合は、[Google AI Studio](https://ais
 
 Secret keyはデータベースを自由に読み書きできる鍵です。他人に見せたり、チャットやスクリーンショットに載せたりしないでください。
 
-### 3. Vercelにデプロイする
+#### 3. Vercelにデプロイする
 
 1. [Vercel](https://vercel.com/)にGitHubアカウントでログインします。
 2. Add New → Projectから、手順1でForkしたリポジトリをImportします。
@@ -65,7 +81,7 @@ Secret keyはデータベースを自由に読み書きできる鍵です。他�
 
 `AUTH_PASSWORD`は、このアプリを開ける唯一の鍵です。URLを知っている人なら誰でもログイン画面にたどり着けるため、長く推測されにくいものにしてください。
 
-### 4. 動作を確認する
+#### 4. 動作を確認する
 
 発行されたURLを開き、`AUTH_PASSWORD`でログインします。企業を1社追加できれば、セットアップは完了です。
 
@@ -81,10 +97,13 @@ Supabaseの無料プランでは、しばらくアクセスがないとプロジ
 | `SUPABASE_SERVICE_ROLE_KEY` | ○ | アプリのAPIがデータベースに接続するためのサーバー専用キー |
 | `AUTH_PASSWORD` | ○ | アプリへのログイン |
 | `GEMINI_API_KEY` | | 企業リサーチ機能。未設定でもほかの機能は使えます |
+| `POSTGRES_URL_NON_POOLING` | | データベースの自動セットアップと自動更新。PostgreSQLの接続文字列を入れます。未設定なら、SQLはSQL Editorで手動実行します |
 | `AUTH_SECRET` | | ログイン状態（セッション）の署名鍵。未設定なら`AUTH_PASSWORD`を使います |
 | `NEXT_PUBLIC_GRADUATION_YEAR` | | 卒業年度の下2桁（例: `28`）。「28卒マイページ」などの表示と、AIリサーチで探す採用ページの年度。未設定なら`28` |
 
 `SUPABASE_SERVICE_ROLE_KEY`には`NEXT_PUBLIC_`を付けないでください。付けるとブラウザに配信されます。
+
+かんたんセットアップでは、Supabaseの連携機能が接続用の環境変数（`NEXT_PUBLIC_SUPABASE_URL`、`SUPABASE_SECRET_KEY`、`POSTGRES_URL_NON_POOLING`など）を自動で設定します。アプリは`SUPABASE_SERVICE_ROLE_KEY`がなければ`SUPABASE_SECRET_KEY`を使うので、自分で入れるのは`AUTH_PASSWORD`だけです。
 
 `AUTH_SECRET`は、次のコマンドなどで作った値を設定するのがおすすめです。設定すると、パスワードそのものを署名に使わずに済みます。値を変えると、発行済みのログイン状態がすべて無効になります。ログアウトはこのブラウザのログイン状態を消すだけなので、ほかの端末でのログインをまとめて取り消したいときは`AUTH_SECRET`を変えてください。
 
@@ -96,19 +115,47 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ## 既存環境を更新する場合
 
-元リポジトリの更新を取り込む手順です。
+元リポジトリの更新を取り込む手順です。先に、アプリの「その他」→「エクスポート（全データ）」でバックアップを保存してください。
 
-1. アプリの「その他」→「エクスポート（全データ）」でバックアップを保存します。
-2. GitHubで自分のForkを開き、Sync forkを押します。Vercelが自動で新しいバージョンをデプロイします。
-3. [`supabase/migrations/`](supabase/migrations/)に、まだ実行していない`.sql`ファイルがあれば、SupabaseのSQL Editorでファイル名の古い順に1つずつ実行します。
+### 1. コードを更新する
 
-実行済みのファイルは、SQL Editorで次を実行すると確認できます。ここに出てこないファイルが未実行です。
+Forkした場合は、GitHubで自分のForkを開き、Sync forkを押します。
+
+かんたんセットアップで作ったリポジトリはForkではないため、Sync forkが出ません。PCにcloneして、次のように取り込みます。
+
+```bash
+git remote add upstream https://github.com/ponto2/job-hunting-dashboard.git
+```
+
+```bash
+git pull upstream main
+```
+
+```bash
+git push
+```
+
+どちらの場合も、Vercelが自動で新しいバージョンをデプロイします。
+
+### 2. データベースを更新する
+
+かんたんセットアップで作った環境（`POSTGRES_URL_NON_POOLING`が設定されている環境）では、デプロイのときに自動で更新されます。作業は不要です。
+
+手動でセットアップした環境では、[`supabase/migrations/`](supabase/migrations/)に、まだ実行していない`.sql`ファイルがあれば、SupabaseのSQL Editorでファイル名の古い順に1つずつ実行します。実行済みのファイルは、SQL Editorで次を実行すると確認できます。ここに出てこないファイルが未実行です。
 
 ```sql
 select version, applied_at from public.schema_migrations order by version;
 ```
 
 `supabase/migrations/`のファイルは何度実行しても安全です。迷ったら、すべて古い順に実行して構いません。
+
+### データベースの自動更新の仕組み
+
+`npm run build`は、最初に[`scripts/migrate.mjs`](scripts/migrate.mjs)を実行します。テーブルがなければ`supabase/schema.sql`を、あれば`supabase/migrations/`の未実行ファイルを適用します。失敗するとビルドが止まり、それまでのバージョンが動き続けます。
+
+- 接続文字列（`POSTGRES_URL_NON_POOLING`、なければ`POSTGRES_URL`、`DATABASE_URL`）がなければ何もしません。
+- Vercelでは本番（Production）のデプロイでだけ実行します。プレビューのデプロイはデータベースを変更しません。
+- 手動でセットアップした環境でも、Supabaseの接続文字列（Connect → Session pooler）を`POSTGRES_URL_NON_POOLING`に設定すれば、以降は自動で更新されます。
 
 ## ローカルで開発する
 
@@ -136,7 +183,7 @@ npm run dev
 - [`supabase/schema.sql`](supabase/schema.sql)は、新規セットアップ用の完全な定義です。常に最新の状態を表します。
 - [`supabase/migrations/`](supabase/migrations/)は、すでに使っている環境向けの差分です。
 
-定義を変えるときは、差分を`supabase/migrations/<日時>_<内容>.sql`として追加し、同じ変更を`schema.sql`にも反映します。差分は何度実行しても同じ結果になるように書き（`if not exists`など）、最後に`schema_migrations`へ自分のファイル名を記録します。`schema.sql`の末尾の一覧にも同じ名前を追加してください。`npm run test:db`が、`schema.sql`と差分の結果が一致することを検証します。
+定義を変えるときは、差分を`supabase/migrations/<日時>_<内容>.sql`として追加し、同じ変更を`schema.sql`にも反映します。差分は何度実行しても同じ結果になるように書き（`if not exists`など）、最後に`schema_migrations`へ自分のファイル名（拡張子なし）を記録します。`schema.sql`の末尾の一覧にも同じ名前を追加してください。`npm run test:db`が、`schema.sql`と差分の結果が一致することを検証します。
 
 ## データベースへのアクセス方式
 
@@ -172,7 +219,7 @@ npm run dev
 npm run build
 ```
 
-本番用にビルドします。Vercelでもこのコマンドが使われます。
+本番用にビルドします。Vercelでもこのコマンドが使われます。接続文字列が設定されていれば、ビルドの前にデータベースを最新にします（[データベースの自動更新の仕組み](#データベースの自動更新の仕組み)）。
 
 ```bash
 npm run start

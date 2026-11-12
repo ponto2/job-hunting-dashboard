@@ -50,6 +50,17 @@ jobs:
           --health-retries 10
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # scripts/migrate.mjs needs the pg package.
+      - run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+
       - run: sudo apt-get update && sudo apt-get install -y postgresql-client
       - run: bash tests/db/run.sh
         env:
