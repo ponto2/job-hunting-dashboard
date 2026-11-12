@@ -1,0 +1,229 @@
+/* ===========================
+   Company Compare
+   =========================== */
+.compare-view {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.compare-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 8px 0;
+  flex-wrap: wrap;
+}
+
+.compare-controls-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.compare-search-input {
+  min-width: 220px;
+  cursor: text;
+}
+
+.compare-selected-count {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.compare-picker {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  scrollbar-width: thin;
+}
+
+.compare-picker-item {
+  display: inline-grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 8px;
+  flex: 0 0 220px;
+  padding: 9px 10px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-glass);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.compare-picker-item:hover {
+  background: var(--raised);
+  border-color: var(--t4);
+}
+
+.compare-picker-item.selected {
+  background: var(--raised);
+  border-color: var(--t1);
+}
+
+.compare-picker-item input {
+  grid-row: 1 / span 2;
+  accent-color: var(--t1);
+}
+
+.compare-picker-name {
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compare-picker-meta {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compare-empty-inline {
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 10px;
+}
+
+.compare-table-wrap {
+  /* Contains the chips' visually hidden labels so they scroll with the table
+     instead of widening the page. */
+  position: relative;
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--row);
+}
+
+.compare-table {
+  /* Company columns share the width equally; each keeps at least 180px. */
+  width: 100%;
+  min-width: calc(132px + var(--compare-columns, 3) * 180px);
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.compare-heading-col {
+  width: 132px;
+}
+
+.compare-table th,
+.compare-table td {
+  padding: 12px 14px;
+  border-right: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.compare-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--panel);
+  color: var(--text-primary);
+}
+
+.compare-table tbody th {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--panel);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.compare-company-title {
+  display: inline-flex;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-accent);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.compare-best-cell {
+  position: relative;
+  color: var(--t1);
+  font-weight: 700;
+}
+
+.compare-best-badge {
+  display: inline-flex;
+  margin-left: 6px;
+  padding: 0 5px;
+  border: 1px solid var(--t4);
+  border-radius: var(--radius-xs);
+  color: var(--t1);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.compare-chips-cell .selection-chips {
+  flex-wrap: wrap;
+}
+
+.compare-long-cell {
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.compare-event-pill {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.compare-event-pill span {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .compare-controls {
+    align-items: stretch;
+  }
+
+  .compare-controls-main {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .compare-search-input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .compare-picker-item {
+    flex-basis: 190px;
+  }
+}

@@ -1,0 +1,134 @@
+/* ===========================
+   面接メモ: interviews (or topics) on the left, their memos on the right.
+   The split itself lives in split-view.css.
+   =========================== */
+
+/* --- List rows --- */
+.interview-row {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.interview-row--unlinked {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.interview-row-date {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--t2);
+  white-space: nowrap;
+}
+
+.interview-row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.interview-row-title {
+  overflow: hidden;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--t1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topic-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.topic-row-name {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Memos under an interview, grouped by type --- */
+.memo-group {
+  padding-top: 16px;
+}
+
+.memo-group-label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--t3);
+}
+
+/* Heading (when there is one) and body on the left, actions top right. */
+.memo-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 12px;
+  padding: 10px 0 14px;
+  border-bottom: 1px solid var(--seg);
+}
+
+.memo-item-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+  grid-column: 1;
+  min-width: 0;
+  margin-bottom: 4px;
+}
+
+.memo-item-type {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--t3);
+}
+
+.memo-item-topic {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: 20px;
+  color: var(--t1);
+  overflow-wrap: anywhere;
+}
+
+.memo-item-context {
+  font-size: var(--fs-xs);
+  line-height: 18px;
+  color: var(--t3);
+}
+
+.memo-item-actions {
+  display: flex;
+  gap: 2px;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: start;
+}
+
+.memo-item-content {
+  grid-column: 1;
+  font-size: var(--fs-lg);
+  line-height: 1.8;
+  color: var(--t1);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* --- Modal --- */
+.interview-memo-modal {
+  max-width: 760px;
+}
+
+.interview-memo-textarea {
+  min-height: 220px;
+  line-height: 1.7;
+}

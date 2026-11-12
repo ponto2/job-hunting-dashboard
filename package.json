@@ -1,0 +1,27 @@
+{
+  "name": "job-hunting-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "node --experimental-vm-modules --test",
+    "test:ui": "node tests/kanban-ui.mjs && node tests/memo-ui.mjs && node tests/regression-ui.mjs",
+    "test:ui:ci": "node tests/run-ui.mjs",
+    "test:db": "bash tests/db/run.sh"
+  },
+  "dependencies": {
+    "@google/genai": "^1.49.0",
+    "@supabase/supabase-js": "^2.102.1",
+    "next": "16.4.5",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.5",
+    "playwright": "^1.64.1"
+  }
+}

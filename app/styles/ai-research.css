@@ -1,0 +1,94 @@
+/* --- AI Research Modal --- */
+.ai-research-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ai-research-input-row .form-input {
+  flex: 1;
+}
+
+.research-progress {
+  margin: 16px 0;
+}
+
+.research-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.research-step.loading {
+  color: var(--text-accent);
+}
+
+.research-step-icon {
+  font-size: var(--fs-lg);
+  width: 20px;
+  text-align: center;
+}
+
+.research-preview {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-top: 16px;
+}
+
+.research-preview h4 {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.preview-item {
+  padding: 8px 10px;
+  background: var(--ground);
+  border: 1px solid var(--seg);
+  border-radius: var(--radius-sm);
+}
+
+.preview-item-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.preview-item-value {
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+.preview-full {
+  grid-column: 1 / -1;
+}
+
+.research-error {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--red-wash);
+  border: 1px solid color-mix(in srgb, var(--red) 45%, transparent);
+  border-radius: var(--radius-sm);
+  color: var(--t1);
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.research-sources { margin: 12px 0; font-size: 12px; overflow-wrap: anywhere; }
+.research-sources summary { cursor: pointer; color: var(--cyan); }
+.research-sources li { margin: 8px 0; }

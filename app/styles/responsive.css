@@ -1,0 +1,97 @@
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .app-bar {
+    gap: 12px;
+    padding: 0 12px;
+  }
+
+  .app-brand-name {
+    display: none;
+  }
+
+  .app-tab {
+    padding: 0 10px;
+    font-size: var(--fs-sm);
+  }
+
+  /* The last visible tab fades out instead of showing a clipped label. */
+  .app-tabs {
+    mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+  }
+
+  .app-tab .icon {
+    display: none;
+  }
+
+  .btn-shell .btn-label {
+    display: none;
+  }
+
+  .attention-strip {
+    padding: 0 12px;
+  }
+
+  .app-main {
+    padding: 0 12px 32px;
+  }
+
+  .view-toolbar {
+    align-items: stretch;
+  }
+
+  .view-toolbar .filter-bar {
+    order: 3;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .view-toolbar .filter-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .view-toolbar .filter-select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .view-toolbar .company-search-input,
+  .view-toolbar .toolbar-search {
+    grid-column: 1 / -1;
+  }
+
+  .toolbar-actions {
+    margin-left: auto;
+  }
+
+  .form-row,
+  .form-row-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-body {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .view-toolbar .filter-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .toolbar-actions {
+    width: 100%;
+  }
+
+  .toolbar-actions .btn {
+    flex: 1;
+  }
+}

@@ -1,0 +1,50 @@
+/* --- Interest pips and industry tags (shared marks) --- */
+.interest-pips {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex: none;
+}
+
+.pip {
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--seg-strong);
+}
+
+.pip--on {
+  background: var(--amber);
+}
+
+.industry-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  font-size: var(--fs-xs);
+  color: var(--t2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.industry-swatch {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 1px;
+}
+
+/* --- Status chips --- */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 7px;
+  border-radius: var(--radius-xs);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+}

@@ -1,0 +1,135 @@
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 5px 12px;
+  border: 1px solid var(--seg-strong);
+  border-radius: var(--radius-sm);
+  background: var(--row);
+  color: var(--t1);
+  font-family: inherit;
+  font-size: var(--fs-md);
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.btn:hover {
+  background: var(--raised);
+  border-color: var(--t4);
+}
+
+.btn:active {
+  background: var(--seg);
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn .icon {
+  color: currentColor;
+}
+
+/* Primary: warm-white plate with board-black figures. One per area. */
+.btn-primary {
+  background: var(--t1);
+  border-color: var(--t1);
+  color: var(--ground);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: var(--plate-hover);
+  border-color: var(--plate-hover);
+  color: var(--ground);
+}
+
+.btn-sm {
+  min-height: 26px;
+  padding: 2px 9px;
+  font-size: var(--fs-sm);
+  gap: 4px;
+}
+
+.btn-danger {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--red) 45%, transparent);
+  color: var(--red);
+}
+
+.btn-danger:hover {
+  background: var(--red-wash);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* Icon-only button for row and section actions (copy, edit, delete). Flat
+   until hovered; the accessible name comes from aria-label. */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--t3);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: var(--row);
+  border-color: var(--seg-strong);
+  color: var(--t1);
+}
+
+.icon-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.icon-btn:disabled:hover {
+  background: transparent;
+  border-color: transparent;
+  color: var(--t3);
+}
+
+.icon-btn--danger:hover {
+  background: var(--red-wash);
+  border-color: color-mix(in srgb, var(--red) 45%, transparent);
+  color: var(--red);
+}
+
+@media (max-width: 640px), (pointer: coarse) {
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Buttons on the navy app bar */
+.btn-shell {
+  min-height: 30px;
+  background: transparent;
+  border-color: var(--shell-line);
+  color: var(--shell-t2);
+}
+
+.btn-shell:hover,
+.menu[open] > .btn-shell {
+  background: var(--shell-field);
+  border-color: var(--shell-t3);
+  color: var(--t1);
+}

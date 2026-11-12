@@ -1,0 +1,188 @@
+/* --- Companies: a quote table grouped by industry --- */
+.company-table-wrap {
+  position: relative;
+  overflow-x: auto;
+  border-top: 1px solid var(--t3);
+  background: var(--panel);
+}
+
+.company-table {
+  width: 100%;
+  min-width: 1180px;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.company-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 7px 10px 6px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--seg-strong);
+  color: var(--t3);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.company-table th.num,
+.company-table td.num {
+  text-align: right;
+}
+
+.sector-row th {
+  padding: 10px 10px 5px;
+  background: var(--ground);
+  border-bottom: 1px solid var(--seg-strong);
+  color: var(--t1);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  text-align: left;
+}
+
+.sector-row .industry-swatch {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: 1px;
+}
+
+.sector-count {
+  margin-left: 10px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--amber);
+}
+
+.company-row th,
+.company-row td {
+  height: 36px;
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--seg);
+  color: var(--t1);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.company-row:hover th,
+.company-row:hover td {
+  background: var(--row);
+}
+
+.company-row .col-name {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 168px;
+  max-width: 240px;
+  background: var(--panel);
+  text-align: left;
+}
+
+.company-row:hover .col-name {
+  background: var(--row);
+}
+
+/* Name, then the 28卒 jump right beside it; the name gives way first. */
+.company-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 200px;
+}
+
+.company-name-cell .kanban-card-jump {
+  flex: none;
+}
+
+.company-open {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--t1);
+  font-family: inherit;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.company-open:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--t3);
+  text-underline-offset: 3px;
+}
+
+.cell-muted {
+  color: var(--t4);
+}
+
+.cell-clip,
+.cell-memo {
+  color: var(--t2) !important;
+}
+
+/* Table cells ignore max-width, so the clipped text carries its own width
+   and the ellipsis. */
+.cell-clip-text {
+  display: block;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cell-memo .cell-clip-text {
+  max-width: 140px;
+}
+
+.selection-chips {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.selection-chip-kind {
+  padding-right: 4px;
+  margin-right: 1px;
+  border-right: 1px solid currentColor;
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+.next-event {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  max-width: 200px;
+}
+
+.next-event-date {
+  color: var(--t2);
+}
+
+.next-event-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.next-event-due {
+  flex: none;
+  color: var(--t3);
+}
+
+.next-event--hot .next-event-due {
+  padding: 0 4px;
+  border-radius: var(--radius-xs);
+  background: var(--red);
+  color: var(--on-red);
+  font-weight: 700;
+}

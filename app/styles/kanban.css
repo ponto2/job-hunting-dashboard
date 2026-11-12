@@ -1,0 +1,306 @@
+/* --- Kanban board: stage columns divided by segment rules --- */
+/* Scrollers are positioned so visually hidden labels inside them stay clipped. */
+.kanban-board {
+  position: relative;
+  display: flex;
+  overflow-x: auto;
+  min-height: 0;
+}
+
+.kanban-column {
+  flex: 1 0 168px;
+  min-width: 168px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--seg);
+  transition: background var(--transition-fast);
+}
+
+.kanban-column:last-child {
+  border-right: 0;
+}
+
+.kanban-column-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 3px;
+  padding: 7px 3px 5px;
+  border-bottom: 1px solid var(--seg-strong);
+}
+
+.kanban-column-title {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--t2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kanban-column-header--win .kanban-column-title { color: var(--red); }
+.kanban-column-header--lose .kanban-column-title { color: var(--blue); }
+
+.kanban-column-count {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--amber);
+}
+
+.kanban-column-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 2px;
+  overflow-y: auto;
+}
+
+.kanban-empty {
+  padding: 10px 0;
+  text-align: center;
+  color: var(--seg-strong);
+  font-size: var(--fs-md);
+}
+
+.kanban-card {
+  flex-shrink: 0;
+  container-type: inline-size;
+  background: var(--row);
+  border: 1px solid var(--seg);
+  border-radius: var(--radius-xs);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  cursor: grab;
+}
+
+.kanban-card:hover {
+  background: var(--raised);
+  border-color: var(--seg-strong);
+}
+
+.kanban-card[aria-busy='true'] {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.kanban-card-dragging {
+  opacity: 0.45;
+}
+
+.kanban-card--withdrawn .kanban-card-name {
+  color: var(--t3);
+}
+
+.kanban-card-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px 5px 5px;
+}
+
+.kanban-card-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  height: 22px;
+}
+
+.kanban-card-open {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.kanban-card-open:hover .kanban-card-name {
+  text-decoration: underline;
+  text-decoration-color: var(--t3);
+  text-underline-offset: 3px;
+}
+
+.kanban-card-open:disabled {
+  cursor: progress;
+}
+
+.kanban-card-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--t1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Line 2 keeps the selection title (冬インターン) longest: the industry name
+   gives way first and only then does the title shorten. */
+.selection-card-title {
+  flex: 0 1 auto;
+  min-width: 0;
+  color: var(--t2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selection-card-title::before {
+  content: '・';
+  color: var(--t3);
+}
+
+/* The recruitment jump: always present when a URL is set. */
+.kanban-card-jump {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  flex: none;
+  height: 22px;
+  min-width: 24px;
+  padding: 0 3px;
+  border: 1px solid var(--cyan-line);
+  border-radius: var(--radius-xs);
+  color: var(--cyan);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.kanban-card-jump .icon {
+  width: 12px;
+  height: 12px;
+}
+
+.kanban-card-jump:hover {
+  background: var(--cyan-wash);
+  border-color: var(--cyan);
+}
+
+.kanban-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  height: 22px;
+}
+
+/* Line 2 opens the company: sector swatch, industry and selection title. */
+.kanban-card-company {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--t2);
+  font-family: inherit;
+  font-size: var(--fs-xs);
+  line-height: 18px;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.kanban-card-company:hover {
+  color: var(--t1);
+}
+
+.kanban-card-company:hover .kanban-card-industry {
+  text-decoration: underline;
+  text-decoration-color: var(--t3);
+  text-underline-offset: 3px;
+}
+
+.kanban-card-company .industry-swatch {
+  margin-right: 5px;
+}
+
+.kanban-card-industry {
+  flex: 0 1000 auto;
+  min-width: 0; /* the swatch still marks the sector when the name is gone */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kanban-card-meta .interest-pips {
+  gap: 1px;
+}
+
+.kanban-card-meta .pip {
+  width: 4px;
+  height: 4px;
+}
+
+.selection-card-actions {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 4px;
+  margin-left: auto;
+}
+
+/* The quote cell: next due date or the age of the last move. */
+.quote {
+  padding: 0 4px;
+  border-radius: var(--radius-xs);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--t3);
+  white-space: nowrap;
+}
+
+.quote--due { color: var(--t1); font-weight: 600; }
+.quote--hot { background: var(--red); color: var(--on-red); font-weight: 700; }
+.quote--up { color: var(--red); font-weight: 700; }
+.quote--down { color: var(--blue); font-weight: 700; }
+.quote--muted { color: var(--t4); }
+
+/* After a stage move the quote cell ticks once, the board's own motion. */
+.quote--tick {
+  animation: quoteTick 1.2s var(--ease-out);
+}
+
+@keyframes quoteTick {
+  0%, 25% { background: var(--t1); color: var(--ground); }
+}
+
+.kanban-column-dragover {
+  background: var(--cyan-wash);
+}
+
+/* --- Empty State --- */
+.empty-state {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 56px 20px;
+  color: var(--t3);
+  text-align: center;
+}
+
+.empty-state > .icon {
+  width: 28px;
+  height: 28px;
+  color: var(--t4);
+}
+
+.empty-state-text {
+  font-size: var(--fs-md);
+  color: var(--t2);
+}

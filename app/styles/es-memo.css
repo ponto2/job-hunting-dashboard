@@ -1,0 +1,236 @@
+/* ===========================
+   ES メモ: questions on the left, answers written in place on the right.
+   The split itself lives in split-view.css.
+   =========================== */
+
+/* --- List row: the question, then category, companies and status --- */
+.es-row-question {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: 19px;
+  color: var(--t1);
+  overflow-wrap: anywhere;
+}
+
+/* --- One answer per company --- */
+.es-answer {
+  padding: 16px 0 18px;
+  border-bottom: 1px solid var(--seg);
+}
+
+/* A long company list wraps inside its own slot; the counter, status and
+   actions stay on the line. */
+.es-answer-head {
+  display: flex;
+  align-items: center;
+  gap: 4px 12px;
+  min-height: 28px;
+  margin-bottom: 8px;
+}
+
+.es-answer-company {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--t1);
+  overflow-wrap: anywhere;
+}
+
+.es-answer-head .char-count,
+.es-answer-head .save-status {
+  flex: none;
+}
+
+.es-answer-actions {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: 2px;
+  margin-left: auto;
+}
+
+/* The answer field reads like the page it will become: no well, a quiet
+   rule, cyan only while focused. */
+.es-answer-input {
+  display: block;
+  width: 100%;
+  min-height: 92px;
+  padding: 8px 10px;
+  border: 1px solid var(--seg);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--t1);
+  font-family: inherit;
+  font-size: var(--fs-lg);
+  line-height: 1.8;
+  resize: none;
+  overflow: hidden;
+  outline: none;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.es-answer-input::placeholder {
+  color: var(--t4);
+}
+
+.es-answer-input:hover {
+  border-color: var(--seg-strong);
+}
+
+.es-answer-input:focus {
+  border-color: var(--cyan);
+  background: var(--ground);
+}
+
+/* --- Character counter (line breaks are not counted) --- */
+.char-count {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--t3);
+  white-space: nowrap;
+}
+
+.char-count--near {
+  color: var(--t1);
+  font-weight: 700;
+}
+
+.char-count--over {
+  color: var(--red);
+  font-weight: 700;
+}
+
+/* --- Save status beside the counter --- */
+.save-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  line-height: 18px;
+  color: var(--t3);
+  white-space: nowrap;
+}
+
+.save-status--error {
+  color: var(--t1);
+  font-weight: 600;
+}
+
+.save-status--error .icon {
+  color: var(--red);
+}
+
+.save-status-retry {
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
+  color: var(--cyan);
+  font-family: inherit;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* --- Modal --- */
+.es-company-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+  background: var(--row);
+  border: 1px solid var(--seg);
+  border-radius: var(--radius-md);
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.es-company-checkbox-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-xs);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  background: var(--row);
+  border: 1px solid var(--seg);
+  color: var(--t2);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  user-select: none;
+}
+
+.es-company-checkbox-item:hover {
+  background: var(--raised);
+  color: var(--t1);
+  border-color: var(--seg-strong);
+}
+
+.es-company-checkbox-item.selected {
+  background: var(--t1);
+  border-color: var(--t1);
+  color: var(--ground);
+}
+
+/* The checkbox stays focusable; its label is the visible control. */
+.es-company-checkbox-item input[type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.es-company-checkbox-item:focus-within {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.es-modal-answer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 5px;
+}
+
+.es-modal-answer-head .form-label {
+  margin: 0;
+}
+
+.es-answer-textarea {
+  min-height: 240px;
+  resize: vertical;
+  font-size: var(--fs-md);
+  line-height: 1.7;
+}
+
+/* --- Loading --- */
+.es-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 48px;
+  justify-content: center;
+  color: var(--t3);
+  font-size: var(--fs-md);
+}
+
+@media (max-width: 640px) {
+  .es-answer-head {
+    flex-wrap: wrap;
+  }
+
+  .es-answer-company {
+    flex-basis: 100%;
+  }
+}

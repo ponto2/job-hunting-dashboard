@@ -1,0 +1,246 @@
+/* ===========================
+   Split view: a list on the left, the selected item on the right.
+   Shared by ESメモ and 面接メモ. One panel under the toolbar, split by a
+   1px rule; each side scrolls on its own. Under 768px one pane shows at a
+   time (data-pane="list" | "detail").
+   =========================== */
+.split-view {
+  display: grid;
+  grid-template-columns: minmax(320px, 360px) minmax(0, 1fr);
+  height: var(--split-height, 560px);
+  min-height: 0;
+  border-top: 1px solid var(--t3);
+  background: var(--panel);
+}
+
+.split-list {
+  min-height: 0;
+  overflow-y: auto;
+  border-right: 1px solid var(--seg);
+  overscroll-behavior: contain;
+}
+
+.split-list-items {
+  list-style: none;
+}
+
+.split-list-section + .split-list-section {
+  border-top: 1px solid var(--seg-strong);
+}
+
+.split-list-label {
+  padding: 10px 12px 4px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--t3);
+}
+
+/* A row is one button: Tab moves between rows, Enter or Space selects. */
+.split-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 9px 12px;
+  border: 0;
+  border-bottom: 1px solid var(--seg);
+  background: transparent;
+  color: var(--t1);
+  font-family: inherit;
+  font-size: var(--fs-md);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.split-row:hover {
+  background: var(--row);
+}
+
+.split-row[aria-current='true'] {
+  background: var(--raised);
+}
+
+.split-row:focus-visible {
+  outline-offset: -2px;
+}
+
+.split-row-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: var(--fs-sm);
+  line-height: 18px;
+  color: var(--t3);
+}
+
+.split-row-meta-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-sm);
+  color: var(--t3);
+}
+
+.split-row-status {
+  flex: none;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--t2);
+  white-space: nowrap;
+}
+
+.split-row-status--quiet {
+  font-weight: 500;
+  color: var(--t3);
+}
+
+.split-row-count {
+  color: var(--amber);
+}
+
+.split-row .quote {
+  flex: none;
+}
+
+.split-detail {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 24px 48px;
+  overscroll-behavior: contain;
+}
+
+/* About 44 characters a line at the 15px reading size. */
+.split-detail-inner {
+  max-width: calc(44 * var(--fs-lg));
+}
+
+.split-detail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--seg-strong);
+}
+
+.split-detail-heading {
+  min-width: 0;
+}
+
+.split-detail-title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--t1);
+  overflow-wrap: anywhere;
+}
+
+.split-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin-top: 4px;
+  font-size: var(--fs-sm);
+  line-height: 18px;
+  color: var(--t3);
+}
+
+.split-detail-head > .btn {
+  flex: none;
+}
+
+.split-detail-empty {
+  padding: 20px 0;
+  font-size: var(--fs-md);
+  color: var(--t3);
+}
+
+.split-detail-foot {
+  padding-top: 16px;
+}
+
+/* Phones only: back to the list from the detail pane. */
+.split-back {
+  display: none;
+}
+
+.filter-bar .segmented {
+  margin-left: 0;
+}
+
+/* A long company name must not stretch the company filter. */
+.es-memo-view select.filter-select,
+.interview-view select.filter-select {
+  max-width: 220px;
+}
+
+@media (max-width: 767px) {
+  .es-memo-view select.filter-select,
+  .interview-view select.filter-select {
+    max-width: none;
+  }
+
+  /* While a question or interview is open, the filters step aside so the
+     text starts near the top. */
+  [data-split-pane='detail']:has(> .split-view) > .view-toolbar .filter-bar,
+  [data-split-pane='detail']:has(> .split-view) > .view-toolbar .toolbar-actions {
+    display: none;
+  }
+
+  .split-view {
+    display: block;
+    height: auto;
+    border-top: 1px solid var(--t3);
+  }
+
+  .split-list,
+  .split-detail {
+    overflow: visible;
+    border-right: 0;
+  }
+
+  .split-view[data-pane='list'] .split-detail,
+  .split-view[data-pane='detail'] .split-list {
+    display: none;
+  }
+
+  .split-detail {
+    padding: 8px 12px 32px;
+  }
+
+  .split-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 44px;
+    margin-bottom: 4px;
+    padding: 0 8px 0 0;
+    border: 0;
+    background: transparent;
+    color: var(--t2);
+    font-family: inherit;
+    font-size: var(--fs-md);
+    cursor: pointer;
+  }
+
+  .split-back:hover {
+    color: var(--t1);
+  }
+
+  .split-row {
+    min-height: 56px;
+    padding: 10px 12px;
+  }
+
+  .split-detail-head {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
