@@ -1,10 +1,19 @@
 import { NextResponse } from 'next/server';
-import { isAuthenticated } from '@/lib/auth';
+import {
+  buildSetCookieHeader, readSessionToken, sessionNeedsRenewal, verifySessionToken,
+} from '@/lib/auth';
 
 export async function GET(request) {
-  const authed = await isAuthenticated(request);
-  if (!authed) {
+  const token = readSessionToken(request);
+  if (!(await verifySessionToken(token))) {
     return NextResponse.json({ authenticated: false }, { status: 401 });
   }
-  return NextResponse.json({ authenticated: true });
+
+  const response = NextResponse.json({ authenticated: true });
+  // Opening the app keeps the session alive: a session older than a day is
+  // reissued with a fresh expiry.
+  if (sessionNeedsRenewal(token)) {
+    response.headers.set('Set-Cookie', await buildSetCookieHeader());
+  }
+  return response;
 }
