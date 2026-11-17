@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createSessionToken, verifyPassword, verifySessionToken } from '../lib/auth.js';
+import {
+  SESSION_DURATION_MS, SESSION_RENEW_AFTER_MS,
+  createSessionToken, readSessionToken, sessionNeedsRenewal, verifyPassword, verifySessionToken,
+} from '../lib/auth.js';
 import {
   MAX_FAILED_ATTEMPTS, clearFailedLogins, getClientAddress, isLoginBlocked, recordFailedLogin,
 } from '../lib/login-rate-limit.js';
@@ -61,6 +64,32 @@ test('tampered, malformed, and expired tokens are rejected', () => withEnv(
     assert.equal(await verifySessionToken(`1000.${sig}`), false);
   },
 ));
+
+test('a session lasts 30 days and is renewed once it is a day old', () => withEnv(
+  { AUTH_PASSWORD: 'pw', AUTH_SECRET: 's' },
+  async () => {
+    const issuedAt = Date.now();
+    const token = await createSessionToken();
+    const expiry = Number(token.split('.')[0]);
+    assert.ok(Math.abs(expiry - (issuedAt + 30 * 24 * 60 * 60 * 1000)) < 5000);
+    assert.equal(SESSION_DURATION_MS, 30 * 24 * 60 * 60 * 1000);
+
+    const issued = expiry - SESSION_DURATION_MS;
+    assert.equal(sessionNeedsRenewal(token, issued), false);
+    assert.equal(sessionNeedsRenewal(token, issued + SESSION_RENEW_AFTER_MS - 1), false);
+    assert.equal(sessionNeedsRenewal(token, issued + SESSION_RENEW_AFTER_MS), true);
+    assert.equal(sessionNeedsRenewal(token, expiry - 1), true);
+    assert.equal(sessionNeedsRenewal(null), false);
+    assert.equal(sessionNeedsRenewal('garbage'), false);
+  },
+));
+
+test('the session token is read from the cookie header', () => {
+  const request = cookie => new Request('http://localhost/', { headers: cookie ? { cookie } : {} });
+  assert.equal(readSessionToken(request('theme=dark; session=123.abc; other=1')), '123.abc');
+  assert.equal(readSessionToken(request('xsession=1')), null);
+  assert.equal(readSessionToken(request()), null);
+});
 
 test('the client address comes from the proxy headers', () => {
   const request = headers => new Request('http://localhost/api/auth/login', { headers });
