@@ -39,7 +39,7 @@
   color: currentColor;
 }
 
-/* Primary: warm-white plate with board-black figures. One per area. */
+/* Primary: a light plate with ground-dark figures. One per area. */
 .btn-primary {
   background: var(--t1);
   border-color: var(--t1);
@@ -119,7 +119,7 @@
   }
 }
 
-/* Buttons on the navy app bar */
+/* Buttons on the app bar */
 .btn-shell {
   min-height: 30px;
   background: transparent;

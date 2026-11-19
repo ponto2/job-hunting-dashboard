@@ -395,7 +395,7 @@
   /* 選択中セルのハイライト */
   .calendar-cell.selected {
     background: var(--row);
-    box-shadow: inset 0 0 0 1px var(--cyan);
+    box-shadow: inset 0 0 0 1px var(--accent);
   }
 
   /* 日別パネルを表示 */
@@ -500,7 +500,7 @@
 }
 
 /* 完了にする／未完了に戻す: a 44px target holding a small square box; done
-   turns the box into the warm plate. */
+   turns the box into the light plate. */
 .day-panel-event-toggle {
   display: inline-flex;
   flex: none;

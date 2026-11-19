@@ -90,5 +90,5 @@
 }
 
 .research-sources { margin: 12px 0; font-size: 12px; overflow-wrap: anywhere; }
-.research-sources summary { cursor: pointer; color: var(--cyan); }
+.research-sources summary { cursor: pointer; color: var(--accent); }
 .research-sources li { margin: 8px 0; }

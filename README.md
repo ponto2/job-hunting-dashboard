@@ -99,7 +99,7 @@ Supabaseの無料プランでは、しばらくアクセスがないとプロジ
 | `GEMINI_API_KEY` | | 企業リサーチ機能。未設定でもほかの機能は使えます |
 | `POSTGRES_URL_NON_POOLING` | | データベースの自動セットアップと自動更新。PostgreSQLの接続文字列を入れます。未設定なら、SQLはSQL Editorで手動実行します |
 | `AUTH_SECRET` | | ログイン状態（セッション）の署名鍵。未設定なら`AUTH_PASSWORD`を使います |
-| `NEXT_PUBLIC_GRADUATION_YEAR` | | 卒業年度の下2桁（例: `28`）。「28卒マイページ」などの表示と、AIリサーチで探す採用ページの年度。未設定なら`28` |
+| `NEXT_PUBLIC_GRADUATION_YEAR` | | 卒業年度の下2桁（例: `28`）。AIリサーチで探す採用ページの年度。未設定なら`28` |
 
 `SUPABASE_SERVICE_ROLE_KEY`には`NEXT_PUBLIC_`を付けないでください。付けるとブラウザに配信されます。
 

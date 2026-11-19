@@ -1,15 +1,16 @@
 'use client';
 
-import { STATUS_CONFIG, IndustryTag, Stars } from '../lib/constants';
+import { IndustryTag, Stars } from '../lib/constants';
 import { useToday } from '../lib/use-today';
 import { parseLocalDate, daysUntil, formatDueLabel, formatFullDate, formatShortDate } from '@/lib/date';
 import { isEventDone } from '@/lib/events';
-import { SELECTION_KINDS, getCompanySelections, getSelectionStatusLabel } from '@/lib/selections';
+import { SELECTION_KINDS, getCompanySelections } from '@/lib/selections';
 import { isHttpUrl } from '@/lib/validation';
 import ModalFrame from './ModalFrame';
 import './Selections.css';
 import Icon from './Icon';
 import ResearchSources from './ResearchSources';
+import { SelectionStatusMark } from './SelectionChips';
 
 function countCharsWithoutNewlines(text) {
   return (text || '').replace(/\r?\n/g, '').length;
@@ -110,12 +111,11 @@ export default function DetailModal({
             {selections.length === 0 && <div className="related-empty">選考を追加して、インターン・本選考の進捗を管理できます。</div>}
             {selections.map(selection => {
               const kind = SELECTION_KINDS[selection.kind] || SELECTION_KINDS.unclassified;
-              const status = STATUS_CONFIG[selection.status] || STATUS_CONFIG['未応募'];
               return (
                 <div key={selection.id} className="company-selection-item">
                   <span className="company-selection-kind" style={{ color: kind.color }}>{kind.label}</span>
                   <span className="company-selection-title">{selection.title || kind.label}</span>
-                  <span className="status-badge" style={{ background: status.bg, color: status.color }}>{getSelectionStatusLabel(selection.status, selection.kind)}</span>
+                  <SelectionStatusMark selection={selection} />
                   {onEditSelection && (
                     <button className="btn btn-sm" type="button" onClick={() => onEditSelection(selection)} aria-label={`${selection.title || kind.label}を編集`}>{selection.kind === 'unclassified' ? '種別を設定' : '編集'}</button>
                   )}

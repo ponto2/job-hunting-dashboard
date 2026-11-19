@@ -30,22 +30,27 @@ export function formatAge(days, iso) {
 
 export const formatDue = formatDueLabel;
 
-// The quote cell on a kanban card: the next deadline or interview when one is
-// within a week and the selection is still open, otherwise the age of the
-// selection's last move, marked ▲ on success and ▼ on rejection.
-export function getSelectionQuote(selection, nextEvent) {
-  const status = selection.status;
-  if (nextEvent && !CLOSED_STATUSES.has(status)) {
-    const kind = EVENT_TYPE_CONFIG[nextEvent.event.event_type]?.label || '予定';
-    return {
-      text: formatDue(nextEvent.days),
-      tone: nextEvent.days <= 3 ? 'hot' : 'due',
-      title: `${kind}：${nextEvent.event.title}（${formatShortDate(nextEvent.event.start_date) || nextEvent.event.start_date}）`,
-    };
-  }
-  const days = daysSince(selection.updated_at);
-  const age = formatAge(days, selection.updated_at);
-  if (status === '合格') return { text: age ? `▲ ${age}` : '▲', tone: 'up', title: age ? `${age}に更新` : '' };
-  if (status === '不合格') return { text: age ? `▼ ${age}` : '▼', tone: 'down', title: age ? `${age}に更新` : '' };
-  return { text: age, tone: status === '辞退' ? 'muted' : 'plain', title: age ? `最終更新：${age}` : '' };
+// Within three days a deadline turns hot (red) and an interview soon (the
+// accent); red is kept for deadlines.
+function dueTone(nextEvent) {
+  if (nextEvent.days > 3) return 'due';
+  return nextEvent.event.event_type === 'deadline' ? 'hot' : 'soon';
+}
+
+// The due cell beside a kanban card's name: the next deadline or interview
+// within a week while the selection is still open, otherwise nothing. The
+// column already names the stage, so a card without a date shows no cell.
+export function getSelectionDue(selection, nextEvent) {
+  if (!nextEvent || CLOSED_STATUSES.has(selection.status)) return null;
+  const kind = EVENT_TYPE_CONFIG[nextEvent.event.event_type]?.label || '予定';
+  return {
+    text: formatDue(nextEvent.days),
+    tone: dueTone(nextEvent),
+    title: `${kind}：${nextEvent.event.title}（${formatShortDate(nextEvent.event.start_date) || nextEvent.event.start_date}）`,
+  };
+}
+
+// The age of a selection's last move ('3日前'), for the card's hover text.
+export function getSelectionAge(selection) {
+  return formatAge(daysSince(selection.updated_at), selection.updated_at);
 }

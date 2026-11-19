@@ -162,6 +162,12 @@ try {
   assert.equal(await firstCard.getByRole('link').getAttribute('href'), 'https://example.com/recruit');
   assert.equal(await fulltime.getByRole('link').getAttribute('href'), 'https://example.com/recruit');
   assert.equal(await unnamed.locator('xpath=ancestor::article').getByRole('link').count(), 0);
+  // The pips keep one place on every card, with or without the mypage arrow.
+  const pipInsets = await internship.locator('article').evaluateAll(cards => cards.map(card => {
+    const pips = card.querySelector('.kanban-card-meta .interest-pips').getBoundingClientRect();
+    return Math.round(card.getBoundingClientRect().right - pips.right);
+  }));
+  assert.equal(new Set(pipInsets).size, 1, JSON.stringify(pipInsets));
   const popupPromise = page.waitForEvent('popup');
   await firstCard.getByRole('link').click();
   const popup = await popupPromise;
@@ -174,7 +180,7 @@ try {
     fullyVisibleCards: Array.from(element.children).filter(card => card.getBoundingClientRect().bottom <= element.getBoundingClientRect().bottom).length,
   }));
   assert(columnMetrics.fullyVisibleCards >= 4, JSON.stringify(columnMetrics));
-  log(`compact cards (${cardHeights[0]}px), duplicate labels, icon links, and ${columnMetrics.fullyVisibleCards} fully visible cards per column`);
+  log(`compact cards (${cardHeights[0]}px), duplicate labels, icon links, aligned pips, and ${columnMetrics.fullyVisibleCards} fully visible cards per column`);
 
   await waitFor(async () => await quoteText(internship, '気配検証株式会社', '冬インターン') === 'あと1日', 'linked deadline on its card');
   const linkedQuote = internship.getByRole('button', { name: '気配検証株式会社・冬インターンの選考を編集', exact: true })
@@ -414,18 +420,18 @@ try {
 
   await tab('企業一覧').click();
   await page.getByRole('heading', { name: /^企業一覧/ }).waitFor({ state: 'visible' });
-  // The 28卒 jump sits right beside the company name in the fixed name
+  // The mypage jump sits right beside the company name in the fixed name
   // column; there is no trailing jump column, and the table fits at 1440px.
   const companyTable = page.locator('.company-table');
   assert.equal(await companyTable.locator('thead th').count(), 11);
   const nameCell = companyTable.locator('tr.company-row').filter({ hasText: '並行選考株式会社' }).locator('th.col-name');
-  const nameJump = nameCell.getByRole('link', { name: '並行選考株式会社の28卒マイページを開く（新しいタブ）', exact: true });
+  const nameJump = nameCell.getByRole('link', { name: '並行選考株式会社のマイページを開く（新しいタブ）', exact: true });
   await nameJump.waitFor({ state: 'visible' });
   const [nameBox, jumpBox] = await Promise.all([nameCell.getByRole('button').boundingBox(), nameJump.boundingBox()]);
   assert(jumpBox.x >= nameBox.x + nameBox.width && jumpBox.x - (nameBox.x + nameBox.width) <= 12, JSON.stringify({ nameBox, jumpBox }));
   const tableFit = await page.locator('.company-table-wrap').evaluate(wrap => [wrap.scrollWidth, wrap.clientWidth]);
   assert(tableFit[0] <= tableFit[1], JSON.stringify(tableFit));
-  log('the 28卒 jump sits beside the company name and the table fits without horizontal scroll');
+  log('the mypage jump sits beside the company name and the table fits without horizontal scroll');
 
   // The company form: every field has its label, industries are suggested,
   // and the interest pips are a labelled group.

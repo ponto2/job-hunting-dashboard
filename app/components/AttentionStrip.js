@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { formatShortDate } from '@/lib/date';
-import { GRADUATION_LABEL } from '@/lib/graduation';
 import { isHttpUrl } from '@/lib/validation';
 import Icon from './Icon';
 
@@ -140,7 +139,7 @@ export default function AttentionStrip({ items, companies, onOpen, onToggleDone 
               <button
                 key={item.id}
                 type="button"
-                className={`attention-item${item.hot ? ' attention-item--hot' : ''}`}
+                className={`attention-item attention-item--${item.kind}${item.hot ? ' attention-item--hot' : ''}`}
                 onClick={() => openItem(item)}
                 tabIndex={hidden ? -1 : undefined}
                 aria-hidden={hidden || undefined}
@@ -184,7 +183,7 @@ export default function AttentionStrip({ items, companies, onOpen, onToggleDone 
                 {items.map((item, index) => {
                   const url = item.event ? recruitUrl(item) : null;
                   return (
-                    <li key={item.id} className={`attention-row${item.hot ? ' attention-item--hot' : ''}`}>
+                    <li key={item.id} className={`attention-row attention-item--${item.kind}${item.hot ? ' attention-item--hot' : ''}`}>
                       <button type="button" className="attention-row-main" onClick={() => openItem(item)} aria-label={`${itemLabel(item)}${item.date ? `（${formatShortDate(item.date)}）` : ''}`}>
                         <span className={`attention-kind attention-kind--${item.kind}`}>{KIND_LABELS[item.kind] || '確認'}</span>
                         <span className="attention-title">{item.title}</span>
@@ -199,10 +198,9 @@ export default function AttentionStrip({ items, companies, onOpen, onToggleDone 
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label={`${item.event.companies?.name || '企業'}の${GRADUATION_LABEL}マイページを開く（新しいタブ）`}
-                            title={`${GRADUATION_LABEL}マイページを開く（新しいタブ）`}
+                            aria-label={`${item.event.companies?.name || '企業'}のマイページを開く（新しいタブ）`}
+                            title="マイページを開く（新しいタブ）"
                           >
-                            {GRADUATION_LABEL}
                             <Icon name="external" size="sm" />
                           </a>
                         )}

@@ -38,7 +38,7 @@
   overflow-wrap: anywhere;
 }
 
-/* Undo and similar: a text button on the warm plate. */
+/* Undo and similar: a text button on the light plate. */
 .toast-action {
   flex: none;
   margin: -2px -4px -2px 4px;
@@ -58,7 +58,7 @@
   text-decoration-thickness: 2px;
 }
 
-/* A failure stays until closed, and reads apart from the warm plate. */
+/* A failure stays until closed, and reads apart from the light plate. */
 .toast--error {
   padding-right: 6px;
   background: var(--raised);

@@ -39,13 +39,17 @@
   text-overflow: ellipsis;
 }
 
-.kanban-column-header--win .kanban-column-title { color: var(--red); }
-.kanban-column-header--lose .kanban-column-title { color: var(--blue); }
+/* Arrival reads green; the stages a selection left by sit a step quieter,
+   on the ground tone, past a firmer rule. */
+.kanban-column-header--done .kanban-column-title { color: var(--green); }
+.kanban-column-header--ended .kanban-column-title { color: var(--ended); }
+.kanban-column--done { border-right-color: var(--seg-strong); }
+.kanban-column--ended { background: var(--ground); }
 
 .kanban-column-count {
   font-size: var(--fs-sm);
   font-weight: 600;
-  color: var(--amber);
+  color: var(--t3);
 }
 
 .kanban-column-body {
@@ -88,7 +92,7 @@
   opacity: 0.45;
 }
 
-.kanban-card--withdrawn .kanban-card-name {
+.kanban-card--ended .kanban-card-name {
   color: var(--t3);
 }
 
@@ -159,33 +163,38 @@
   color: var(--t3);
 }
 
-/* The recruitment jump: always present when a URL is set. */
+/* The recruitment jump: a quiet arrow whenever a URL is set; its label says
+   where it goes. It takes the accent only under the pointer. */
 .kanban-card-jump {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 1px;
   flex: none;
   height: 22px;
-  min-width: 24px;
-  padding: 0 3px;
-  border: 1px solid var(--cyan-line);
+  min-width: 22px;
+  padding: 0;
+  border: 0;
   border-radius: var(--radius-xs);
-  color: var(--cyan);
-  font-size: var(--fs-xs);
-  font-weight: 600;
+  color: var(--t3);
   text-decoration: none;
-  transition: background var(--transition-fast), border-color var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .kanban-card-jump .icon {
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
 }
 
 .kanban-card-jump:hover {
-  background: var(--cyan-wash);
-  border-color: var(--cyan);
+  background: var(--accent-wash);
+  color: var(--accent);
+}
+
+/* Holds the arrow's width on a card without a URL, so the pips beside it
+   line up on every card. */
+.kanban-card-jump-slot {
+  flex: none;
+  width: 22px;
 }
 
 .kanban-card-meta {
@@ -246,6 +255,11 @@
   height: 4px;
 }
 
+/* The due cell sits beside the name and never shrinks; the name gives way. */
+.kanban-card-head .quote {
+  flex: none;
+}
+
 .selection-card-actions {
   display: inline-flex;
   align-items: center;
@@ -254,7 +268,8 @@
   margin-left: auto;
 }
 
-/* The quote cell: next due date or the age of the last move. */
+/* The due cell: the next deadline or interview, on kanban cards and in the
+   memo lists. */
 .quote {
   padding: 0 4px;
   border-radius: var(--radius-xs);
@@ -266,22 +281,24 @@
 }
 
 .quote--due { color: var(--t1); font-weight: 600; }
-.quote--hot { background: var(--red); color: var(--on-red); font-weight: 700; }
-.quote--up { color: var(--red); font-weight: 700; }
-.quote--down { color: var(--blue); font-weight: 700; }
-.quote--muted { color: var(--t4); }
+.quote--hot { background: var(--red); color: var(--on-red); font-weight: 700; } /* deadline within three days */
+.quote--soon { background: var(--accent-wash); color: var(--accent); font-weight: 700; } /* interview within three days */
 
-/* After a stage move the quote cell ticks once, the board's own motion. */
-.quote--tick {
-  animation: quoteTick 1.2s var(--ease-out);
+/* After a stage move the card lights once, the board's own motion. */
+.kanban-card--tick {
+  animation: cardTick 1.2s var(--ease-out);
 }
 
-@keyframes quoteTick {
-  0%, 25% { background: var(--t1); color: var(--ground); }
+@keyframes cardTick {
+  0%, 25% { background: var(--raised); border-color: var(--t3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kanban-card--tick { animation: none; }
 }
 
 .kanban-column-dragover {
-  background: var(--cyan-wash);
+  background: var(--accent-wash);
 }
 
 /* --- Empty State --- */

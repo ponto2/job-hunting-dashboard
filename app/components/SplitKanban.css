@@ -158,7 +158,7 @@
 }
 
 .selection-splitter:hover > span,
-.selection-splitter:focus-visible > span { width: 64px; background: var(--cyan); }
+.selection-splitter:focus-visible > span { width: 64px; background: var(--accent); }
 
 .selection-setup-notice {
   margin-bottom: 12px;
@@ -209,6 +209,7 @@
 
 @media (pointer: coarse), (max-width: 640px) {
   .kanban-card-jump { height: 32px; min-width: 36px; }
+  .kanban-card-jump-slot { width: 36px; }
   .kanban-card-head, .kanban-card-meta { height: 32px; }
   .selection-view-switch button, .selection-pane-header .btn { min-height: 32px; }
 }
