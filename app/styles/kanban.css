@@ -190,6 +190,13 @@
   color: var(--accent);
 }
 
+/* Holds the arrow's width on a card without a URL, so the pips beside it
+   line up on every card. */
+.kanban-card-jump-slot {
+  flex: none;
+  width: 22px;
+}
+
 .kanban-card-meta {
   display: flex;
   align-items: center;

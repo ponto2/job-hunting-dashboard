@@ -3,7 +3,6 @@
 import { Stars, getIndustryConfig } from '../lib/constants';
 import { formatDue } from '../lib/board';
 import { formatShortDate } from '@/lib/date';
-import { GRADUATION_LABEL } from '@/lib/graduation';
 import { isHttpUrl } from '@/lib/validation';
 import SelectionChips from './SelectionChips';
 import Icon from './Icon';
@@ -70,8 +69,8 @@ export default function CompanyTable({ groups, nextEventMap, onOpen }) {
                           href={recruitUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={`${c.name}の${GRADUATION_LABEL}マイページを開く（新しいタブ）`}
-                          title={`${GRADUATION_LABEL}マイページを開く（新しいタブ）`}
+                          aria-label={`${c.name}のマイページを開く（新しいタブ）`}
+                          title="マイページを開く（新しいタブ）"
                         >
                           <Icon name="external" size="sm" />
                         </a>

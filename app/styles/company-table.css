@@ -85,7 +85,7 @@
   background: var(--row);
 }
 
-/* Name, then the 28卒 jump right beside it; the name gives way first. */
+/* Name, then the mypage jump right beside it; the name gives way first. */
 .company-name-cell {
   display: flex;
   align-items: center;

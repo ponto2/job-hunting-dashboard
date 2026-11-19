@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { STATUS_CONFIG, Stars, getIndustryConfig } from '../lib/constants';
 import { getSelectionAge, getSelectionDue } from '../lib/board';
-import { GRADUATION_LABEL } from '@/lib/graduation';
 import Icon from './Icon';
 import { SELECTION_STATUSES, getSelectionStatusLabel } from '@/lib/selections';
 import { isHttpUrl } from '@/lib/validation';
@@ -139,11 +138,13 @@ export default function KanbanBoard({
                       </button>
                       <span className="selection-card-actions">
                         <Stars count={company.interest || 0} />
-                        {url && (
-                          <a className="kanban-card-jump" href={url} target="_blank" rel="noopener noreferrer" draggable={false} aria-label={`${company.name}の${GRADUATION_LABEL}マイページを開く（新しいタブ）`} title={`${GRADUATION_LABEL}マイページを開く（新しいタブ）`}>
+                        {/* Without a URL an empty slot of the same width keeps
+                            the pips in one place on every card. */}
+                        {url ? (
+                          <a className="kanban-card-jump" href={url} target="_blank" rel="noopener noreferrer" draggable={false} aria-label={`${company.name}のマイページを開く（新しいタブ）`} title="マイページを開く（新しいタブ）">
                             <Icon name="external" size="sm" />
                           </a>
-                        )}
+                        ) : <span className="kanban-card-jump-slot" aria-hidden="true" />}
                       </span>
                     </div>
                   </div>

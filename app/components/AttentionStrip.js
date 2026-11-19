@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { formatShortDate } from '@/lib/date';
-import { GRADUATION_LABEL } from '@/lib/graduation';
 import { isHttpUrl } from '@/lib/validation';
 import Icon from './Icon';
 
@@ -199,8 +198,8 @@ export default function AttentionStrip({ items, companies, onOpen, onToggleDone 
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label={`${item.event.companies?.name || '企業'}の${GRADUATION_LABEL}マイページを開く（新しいタブ）`}
-                            title={`${GRADUATION_LABEL}マイページを開く（新しいタブ）`}
+                            aria-label={`${item.event.companies?.name || '企業'}のマイページを開く（新しいタブ）`}
+                            title="マイページを開く（新しいタブ）"
                           >
                             <Icon name="external" size="sm" />
                           </a>
