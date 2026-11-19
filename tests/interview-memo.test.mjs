@@ -57,9 +57,9 @@ test('memos without a listed interview are unlinked', () => {
   assert.deepEqual(getUnlinkedMemos(memos, ids).map(item => item.id), [id(302), id(303)]);
 });
 
-test('the quote cell: ahead within 3 days is hot, within a week strong, behind shows days ago', () => {
-  assert.deepEqual(getInterviewQuote(0), { text: '今日', tone: 'hot' });
-  assert.deepEqual(getInterviewQuote(3), { text: 'あと3日', tone: 'hot' });
+test('the date cell: ahead within 3 days is soon (never the deadline red), within a week strong, behind shows days ago', () => {
+  assert.deepEqual(getInterviewQuote(0), { text: '今日', tone: 'soon' });
+  assert.deepEqual(getInterviewQuote(3), { text: 'あと3日', tone: 'soon' });
   assert.deepEqual(getInterviewQuote(5), { text: 'あと5日', tone: 'due' });
   assert.deepEqual(getInterviewQuote(12), { text: 'あと12日', tone: 'plain' });
   assert.deepEqual(getInterviewQuote(-4), { text: '4日前', tone: 'plain' });

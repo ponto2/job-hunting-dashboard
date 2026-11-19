@@ -77,7 +77,7 @@
 }
 
 .login-input:focus {
-  border-color: var(--cyan);
+  border-color: var(--accent);
 }
 
 .login-input:disabled {

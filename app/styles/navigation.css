@@ -14,7 +14,7 @@
 }
 
 .pip--on {
-  background: var(--amber);
+  background: var(--t2);
 }
 
 .industry-tag {
@@ -47,4 +47,86 @@
   font-weight: 600;
   line-height: 18px;
   white-space: nowrap;
+}
+
+/* A selection in the company table and the compare view: kind, the
+   progress rail, then the status in its own ink, on a hairline chip. */
+.selection-chip {
+  gap: 6px;
+  padding: 0 7px 0 6px;
+  border: 1px solid var(--seg-strong);
+}
+
+.selection-chip-status,
+.selection-status-mark {
+  white-space: nowrap;
+}
+
+.selection-status-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  line-height: 18px;
+}
+
+/* --- Progress rail: five stops along a selection's route --- */
+.progress-rail {
+  --stop: 5px;
+  --link: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--link);
+  flex: none;
+}
+
+.progress-stop {
+  position: relative;
+  width: var(--stop);
+  height: var(--stop);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--seg-strong);
+}
+
+/* The link leading into each stop after the first */
+.progress-stop + .progress-stop::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: var(--link);
+  height: 1px;
+  margin-top: -0.5px;
+  background: var(--seg-strong);
+}
+
+.progress-stop--on {
+  background: var(--accent);
+  box-shadow: none;
+}
+
+.progress-stop + .progress-stop--on::before {
+  background: var(--accent);
+}
+
+.progress-stop--current {
+  box-shadow: 0 0 0 2px var(--accent-wash);
+}
+
+.progress-rail--done .progress-stop {
+  background: var(--green);
+  box-shadow: none;
+}
+
+.progress-rail--done .progress-stop + .progress-stop::before {
+  background: var(--green);
+}
+
+.progress-rail--ended .progress-stop {
+  box-shadow: inset 0 0 0 1px var(--seg);
+}
+
+.progress-rail--ended .progress-stop + .progress-stop::before {
+  background: var(--seg);
 }

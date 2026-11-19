@@ -131,10 +131,10 @@ try {
     if (await detailAnswer.evaluate(element => element === document.activeElement)) break;
   }
   assert(await detailAnswer.evaluate(element => element === document.activeElement), 'answer field reached by Tab');
-  // The rule eases to cyan over 120ms.
+  // The rule eases to the accent over 120ms.
   await waitFor(
-    async () => (await detailAnswer.evaluate(element => getComputedStyle(element).borderColor)) === 'rgb(60, 199, 218)',
-    'focused answer shows the cyan rule',
+    async () => (await detailAnswer.evaluate(element => getComputedStyle(element).borderColor)) === 'rgb(134, 174, 227)',
+    'focused answer shows the accent rule',
     1000,
   );
 

@@ -51,13 +51,13 @@ export default function Icon({ name, size, label, className = '' }) {
   );
 }
 
-// The favicon's briefcase with its cyan check, drawn for the app bar.
+// The favicon's briefcase with its check, drawn for the app bar in the accent.
 export function BrandMark() {
   return (
     <svg className="app-brand-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <rect x="2.5" y="7" width="19" height="13.5" rx="2" fill="none" stroke="var(--t1)" strokeWidth="1.75" />
       <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" fill="none" stroke="var(--t1)" strokeWidth="1.75" />
-      <path d="M8.5 13.5l2.6 2.6 5-5.2" fill="none" stroke="var(--cyan)" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8.5 13.5l2.6 2.6 5-5.2" fill="none" stroke="var(--accent)" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

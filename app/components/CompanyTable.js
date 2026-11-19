@@ -8,11 +8,18 @@ import { isHttpUrl } from '@/lib/validation';
 import SelectionChips from './SelectionChips';
 import Icon from './Icon';
 
+// Within three days a deadline turns hot (red) and an interview soon (the
+// accent): red is kept for deadlines.
+function urgencyClass(next) {
+  if (next.days > 3) return '';
+  return next.event.event_type === 'deadline' ? ' next-event--hot' : ' next-event--soon';
+}
+
 function NextEvent({ next }) {
   if (!next) return <span className="cell-muted">—</span>;
   const date = formatShortDate(next.event.start_date);
   return (
-    <span className={`next-event${next.days <= 3 ? ' next-event--hot' : ''}`} title={next.event.title}>
+    <span className={`next-event${urgencyClass(next)}`} title={next.event.title}>
       <span className="next-event-date">{date}</span>
       <span className="next-event-title">{next.event.title}</span>
       <span className="next-event-due">{formatDue(next.days)}</span>
@@ -66,7 +73,7 @@ export default function CompanyTable({ groups, nextEventMap, onOpen }) {
                           aria-label={`${c.name}の${GRADUATION_LABEL}マイページを開く（新しいタブ）`}
                           title={`${GRADUATION_LABEL}マイページを開く（新しいタブ）`}
                         >
-                          <span>{GRADUATION_LABEL}</span><Icon name="external" size="sm" />
+                          <Icon name="external" size="sm" />
                         </a>
                       )}
                     </div>

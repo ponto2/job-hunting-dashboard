@@ -179,7 +179,7 @@
 .form-input:focus,
 .form-textarea:focus,
 .form-select:focus {
-  border-color: var(--cyan);
+  border-color: var(--accent);
 }
 
 .form-input:disabled,
@@ -202,7 +202,7 @@
   color: var(--t3);
 }
 
-/* Checkbox with its label as one hit area; checked is the warm plate. */
+/* Checkbox with its label as one hit area; checked is the light plate. */
 .form-check {
   display: inline-flex;
   align-items: center;
@@ -241,7 +241,7 @@
   appearance: none;
   cursor: pointer;
   padding-right: 30px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238E8A80' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23868D99' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
 }
@@ -309,7 +309,7 @@
 }
 
 .interest-star.active::before {
-  background: var(--amber);
+  background: var(--t1);
 }
 
 .interest-star:hover {
@@ -344,7 +344,7 @@
 }
 
 .detail-link {
-  color: var(--cyan);
+  color: var(--accent);
   text-decoration: none;
 }
 
@@ -377,7 +377,7 @@
 }
 
 .detail-memo {
-  border-color: color-mix(in srgb, var(--amber) 40%, transparent);
+  border-color: var(--seg-strong);
   color: var(--t1);
 }
 
@@ -410,7 +410,7 @@
 }
 
 .related-kind--deadline { background: var(--red-wash); color: var(--red); }
-.related-kind--interview { background: var(--amber-wash); color: var(--amber); }
+.related-kind--interview { background: var(--accent-wash); color: var(--accent); }
 .related-kind--internship { background: var(--green-wash); color: var(--green); }
 .related-kind--es { background: var(--seg); color: var(--t2); }
 
