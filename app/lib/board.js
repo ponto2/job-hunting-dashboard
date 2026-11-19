@@ -37,22 +37,20 @@ function dueTone(nextEvent) {
   return nextEvent.event.event_type === 'deadline' ? 'hot' : 'soon';
 }
 
-// The date cell on a kanban card: the next deadline or interview when one is
-// within a week and the selection is still open, otherwise the age of the
-// selection's last move, green once it arrived and quiet once it ended.
-export function getSelectionQuote(selection, nextEvent) {
-  const status = selection.status;
-  if (nextEvent && !CLOSED_STATUSES.has(status)) {
-    const kind = EVENT_TYPE_CONFIG[nextEvent.event.event_type]?.label || '予定';
-    return {
-      text: formatDue(nextEvent.days),
-      tone: dueTone(nextEvent),
-      title: `${kind}：${nextEvent.event.title}（${formatShortDate(nextEvent.event.start_date) || nextEvent.event.start_date}）`,
-    };
-  }
-  const days = daysSince(selection.updated_at);
-  const age = formatAge(days, selection.updated_at);
-  const title = age ? `最終更新：${age}` : '';
-  if (status === '合格') return { text: age, tone: 'done', title };
-  return { text: age, tone: CLOSED_STATUSES.has(status) ? 'muted' : 'plain', title };
+// The due cell beside a kanban card's name: the next deadline or interview
+// within a week while the selection is still open, otherwise nothing. The
+// column already names the stage, so a card without a date shows no cell.
+export function getSelectionDue(selection, nextEvent) {
+  if (!nextEvent || CLOSED_STATUSES.has(selection.status)) return null;
+  const kind = EVENT_TYPE_CONFIG[nextEvent.event.event_type]?.label || '予定';
+  return {
+    text: formatDue(nextEvent.days),
+    tone: dueTone(nextEvent),
+    title: `${kind}：${nextEvent.event.title}（${formatShortDate(nextEvent.event.start_date) || nextEvent.event.start_date}）`,
+  };
+}
+
+// The age of a selection's last move ('3日前'), for the card's hover text.
+export function getSelectionAge(selection) {
+  return formatAge(daysSince(selection.updated_at), selection.updated_at);
 }

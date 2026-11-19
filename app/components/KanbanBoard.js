@@ -2,10 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { STATUS_CONFIG, Stars, getIndustryConfig } from '../lib/constants';
-import { getSelectionQuote } from '../lib/board';
+import { getSelectionAge, getSelectionDue } from '../lib/board';
 import { GRADUATION_LABEL } from '@/lib/graduation';
 import Icon from './Icon';
-import ProgressRail from './ProgressRail';
 import { SELECTION_STATUSES, getSelectionStatusLabel } from '@/lib/selections';
 import { isHttpUrl } from '@/lib/validation';
 
@@ -110,11 +109,12 @@ export default function KanbanBoard({
               const label = kind === 'internship' ? 'インターン' : '本選考';
               const selectionLabel = selectionLabels.get(selection.id);
               const url = isHttpUrl(company.recruit_url) ? company.recruit_url : null;
-              const quote = getSelectionQuote(selection, nextEventMap?.get(String(selection.id)));
+              const due = getSelectionDue(selection, nextEventMap?.get(String(selection.id)));
+              const age = getSelectionAge(selection);
               return (
                 <article
                   key={selection.id}
-                  className={`kanban-card${dragId === selection.id ? ' kanban-card-dragging' : ''}${ENDED_STATUSES.has(selection.status) ? ' kanban-card--ended' : ''}`}
+                  className={`kanban-card${dragId === selection.id ? ' kanban-card-dragging' : ''}${ENDED_STATUSES.has(selection.status) ? ' kanban-card--ended' : ''}${tickedId === selection.id ? ' kanban-card--tick' : ''}`}
                   draggable={!pending}
                   aria-busy={pending}
                   onDragStart={event => {
@@ -126,15 +126,10 @@ export default function KanbanBoard({
                 >
                   <div className="kanban-card-detail">
                     <div className="kanban-card-head">
-                      <button type="button" className="kanban-card-open" disabled={pending} onClick={() => onEdit(selection)} aria-label={`${company.name}・${selectionLabel || selection.title || label}の選考を編集`} title={`${company.name}${selectionLabel ? ` · ${selectionLabel}` : ''}`}>
+                      <button type="button" className="kanban-card-open" disabled={pending} onClick={() => onEdit(selection)} aria-label={`${company.name}・${selectionLabel || selection.title || label}の選考を編集`} title={`${company.name}${selectionLabel ? ` · ${selectionLabel}` : ''}${age ? `（最終更新：${age}）` : ''}`}>
                         <span className="kanban-card-name">{company.name}</span>
                       </button>
-                      <Stars count={company.interest || 0} />
-                      {url && (
-                        <a className="kanban-card-jump" href={url} target="_blank" rel="noopener noreferrer" draggable={false} aria-label={`${company.name}の${GRADUATION_LABEL}マイページを開く（新しいタブ）`} title={`${GRADUATION_LABEL}マイページを開く（新しいタブ）`}>
-                          <Icon name="external" size="sm" />
-                        </a>
-                      )}
+                      {due && <span className={`quote quote--${due.tone}`} title={due.title}>{due.text}</span>}
                     </div>
                     <div className="kanban-card-meta">
                       <button type="button" className="kanban-card-company" onClick={() => onDetail(company)} aria-label={`${company.name}の企業情報を開く`} title={`企業情報を開く：${company.industry || '業界未設定'}${selectionLabel ? `・${selectionLabel}` : ''}`} draggable={false}>
@@ -143,8 +138,12 @@ export default function KanbanBoard({
                         {selectionLabel && <span className="selection-card-title">{selectionLabel}</span>}
                       </button>
                       <span className="selection-card-actions">
-                        <ProgressRail status={selection.status} />
-                        {quote.text && <span className={`quote quote--${quote.tone}${tickedId === selection.id ? ' quote--tick' : ''}`} title={quote.title}>{quote.text}</span>}
+                        <Stars count={company.interest || 0} />
+                        {url && (
+                          <a className="kanban-card-jump" href={url} target="_blank" rel="noopener noreferrer" draggable={false} aria-label={`${company.name}の${GRADUATION_LABEL}マイページを開く（新しいタブ）`} title={`${GRADUATION_LABEL}マイページを開く（新しいタブ）`}>
+                            <Icon name="external" size="sm" />
+                          </a>
+                        )}
                       </span>
                     </div>
                   </div>

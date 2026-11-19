@@ -239,14 +239,18 @@
   text-overflow: ellipsis;
 }
 
-.kanban-card-head .interest-pips {
+.kanban-card-meta .interest-pips {
   gap: 1px;
-  margin-left: 2px;
 }
 
-.kanban-card-head .pip {
+.kanban-card-meta .pip {
   width: 4px;
   height: 4px;
+}
+
+/* The due cell sits beside the name and never shrinks; the name gives way. */
+.kanban-card-head .quote {
+  flex: none;
 }
 
 .selection-card-actions {
@@ -257,7 +261,8 @@
   margin-left: auto;
 }
 
-/* The date cell: next due date or the age of the last move. */
+/* The due cell: the next deadline or interview, on kanban cards and in the
+   memo lists. */
 .quote {
   padding: 0 4px;
   border-radius: var(--radius-xs);
@@ -271,16 +276,18 @@
 .quote--due { color: var(--t1); font-weight: 600; }
 .quote--hot { background: var(--red); color: var(--on-red); font-weight: 700; } /* deadline within three days */
 .quote--soon { background: var(--accent-wash); color: var(--accent); font-weight: 700; } /* interview within three days */
-.quote--done { color: var(--green); }
-.quote--muted { color: var(--t4); }
 
-/* After a stage move the quote cell ticks once, the board's own motion. */
-.quote--tick {
-  animation: quoteTick 1.2s var(--ease-out);
+/* After a stage move the card lights once, the board's own motion. */
+.kanban-card--tick {
+  animation: cardTick 1.2s var(--ease-out);
 }
 
-@keyframes quoteTick {
-  0%, 25% { background: var(--t1); color: var(--ground); }
+@keyframes cardTick {
+  0%, 25% { background: var(--raised); border-color: var(--t3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kanban-card--tick { animation: none; }
 }
 
 .kanban-column-dragover {
