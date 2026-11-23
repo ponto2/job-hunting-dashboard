@@ -54,7 +54,7 @@ export default function CompanyTable({ ref, maxHeight, groups, nextEventMap, onO
             <th scope="col" className="num">有休消化</th>
             <th scope="col" className="num">離職率</th>
             <th scope="col">本社</th>
-            <th scope="col">メモ</th>
+            <th scope="col" className="col-memo">メモ</th>
           </tr>
         </thead>
         {groups.map(([industry, companies]) => (
@@ -100,7 +100,7 @@ export default function CompanyTable({ ref, maxHeight, groups, nextEventMap, onO
                   <td className="num">{c.paid_leave_rate || '—'}</td>
                   <td className="num">{c.turnover_rate || '—'}</td>
                   <td className="cell-clip"><span className="cell-clip-text" title={c.headquarters || undefined}>{c.headquarters || '—'}</span></td>
-                  <td className="cell-memo">{c.memo ? <span className="cell-clip-text" title={c.memo}>{c.memo}</span> : <span className="cell-muted">—</span>}</td>
+                  <td className="cell-memo col-memo">{c.memo ? <span className="cell-clip-text" title={c.memo}>{c.memo}</span> : <span className="cell-muted">—</span>}</td>
                 </tr>
               );
             })}

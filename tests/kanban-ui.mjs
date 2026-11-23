@@ -512,6 +512,18 @@ try {
   await page.setViewportSize({ width: 1440, height: 1000 });
   log('company toolbar buttons stay at the right end of the first row, with the filters before them or below');
 
+  // A wider window does not spread the columns: each keeps its content
+  // width, so the right-aligned figures stay under their headings, and the
+  // memo column takes the extra width.
+  const companyColumnWidths = () => page.locator('.company-table thead th').evaluateAll(cells => cells.map(cell => Math.round(cell.getBoundingClientRect().width)));
+  const narrowColumns = await companyColumnWidths();
+  await page.setViewportSize({ width: 1920, height: 1000 });
+  await waitFor(async () => (await companyColumnWidths()).at(-1) > narrowColumns.at(-1) + 200, 'memo column takes the extra width');
+  const wideColumns = await companyColumnWidths();
+  assert.deepEqual(wideColumns.slice(0, -1), narrowColumns.slice(0, -1), JSON.stringify({ narrowColumns, wideColumns }));
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  log('company columns keep their content width on a wide window and the memo takes the rest');
+
   // The company form: every field has its label, industries are suggested,
   // and the interest pips are a labelled group.
   await page.getByRole('button', { name: '企業を追加', exact: true }).click();

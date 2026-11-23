@@ -64,6 +64,13 @@
   text-align: right;
 }
 
+/* A right-aligned figure followed by left-aligned text would run into it;
+   the first text column after the figures keeps a wider gap. */
+.company-table th.num + th:not(.num),
+.company-table td.num + td:not(.num) {
+  padding-left: 22px;
+}
+
 /* The industry heading waits under the column headings while its rows
    pass; the next industry slides over it. */
 .sector-row th {
@@ -188,8 +195,19 @@
   text-overflow: ellipsis;
 }
 
+/* Every column but the memo is as wide as its content, so the figures sit
+   right-aligned under their headings without a gap before them. The memo
+   takes the rest of the row, and its text runs to the column's edge. */
+.company-table .col-memo {
+  width: 100%;
+}
+
+/* A memo asks for 140px, as it did when clipped there, however long it is:
+   the containment keeps its length from widening the table. */
 .cell-memo .cell-clip-text {
-  max-width: 140px;
+  contain: inline-size;
+  min-width: 140px;
+  max-width: none;
 }
 
 .selection-chips {
