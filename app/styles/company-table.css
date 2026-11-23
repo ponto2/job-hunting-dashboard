@@ -64,6 +64,13 @@
   text-align: right;
 }
 
+/* A right-aligned figure followed by left-aligned text would run into it;
+   the first text column after the figures keeps a wider gap. */
+.company-table th.num + th:not(.num),
+.company-table td.num + td:not(.num) {
+  padding-left: 22px;
+}
+
 /* The industry heading waits under the column headings while its rows
    pass; the next industry slides over it. */
 .sector-row th {
@@ -188,8 +195,19 @@
   text-overflow: ellipsis;
 }
 
+/* Every column but the memo is as wide as its content, so the figures sit
+   right-aligned under their headings without a gap before them. The memo
+   takes the rest of the row, and its text runs to the column's edge. */
+.company-table .col-memo {
+  width: 100%;
+}
+
+/* A memo asks for 140px, as it did when clipped there, however long it is:
+   the containment keeps its length from widening the table. */
 .cell-memo .cell-clip-text {
-  max-width: 140px;
+  contain: inline-size;
+  min-width: 140px;
+  max-width: none;
 }
 
 .selection-chips {
@@ -244,14 +262,12 @@
   color: var(--accent);
 }
 
-/* Between phones and wide screens the filters do not fit beside the title.
-   The buttons stay up beside the title and the filters take the next row,
-   as on phones, rather than the buttons taking a row of their own and
-   leaving the table less height. */
-@media (min-width: 769px) and (max-width: 1439px) {
-  .companies-toolbar .filter-bar {
-    order: 1;
-  }
+/* The buttons always end the first toolbar row at the right. When the
+   filters do not fit beside the title (CompaniesView measures this rather
+   than guess a width, since the counts and industry names vary), they take
+   the next row instead of the buttons taking a row of their own. */
+.view-toolbar[data-filters-below] .filter-bar {
+  order: 1;
 }
 
 /* Phones: the names give up width so the scrolled columns still have room. */

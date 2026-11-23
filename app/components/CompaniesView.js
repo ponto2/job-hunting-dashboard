@@ -6,6 +6,7 @@ import { parseLocalDate } from '@/lib/date';
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { STATUSES, parseSalary, parseNum } from '../lib/constants';
 import { usePaneHeight } from '../lib/use-pane-height';
+import { useWrapsRow } from '../lib/use-wraps-row';
 import { createCompanyActions } from '../lib/company-actions';
 import { buildNextEventMap } from '../lib/board';
 import { getCompanySelections } from '@/lib/selections';
@@ -108,6 +109,9 @@ export default function CompaniesView({
   // The table fits the rest of the window and scrolls inside it; it mounts
   // only when something matches, so it is measured again then.
   const tableHeight = usePaneHeight(tableRef, toolbarRef, isActive, [filtered.length > 0]);
+  // When the filters do not fit beside the title they take the next row, and
+  // the buttons stay at the right end of the first (company-table.css).
+  const filtersBelow = useWrapsRow(toolbarRef, isActive);
 
   const addCompany = async (data) => {
     if (await actions.saveCompany(data)) setAddingCompany(false);
@@ -115,7 +119,7 @@ export default function CompaniesView({
 
   return (
     <>
-      <div className="view-toolbar companies-toolbar" ref={toolbarRef}>
+      <div className="view-toolbar" ref={toolbarRef} data-filters-below={filtersBelow || undefined}>
         <h1 className="view-title">企業一覧<span className="view-title-count">{filtered.length === companies.length ? `${companies.length}社` : `${filtered.length} / ${companies.length}社`}</span></h1>
         <dl className="view-title-stats">
           <div><dt>進行中</dt><dd>{activeCount}</dd></div>
