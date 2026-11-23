@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Stars, getIndustryConfig } from '../lib/constants';
 import { formatDue } from '../lib/board';
 import { formatShortDate } from '@/lib/date';
@@ -26,9 +27,20 @@ function NextEvent({ next }) {
   );
 }
 
-export default function CompanyTable({ groups, nextEventMap, onOpen }) {
+// The table scrolls inside a box that fits the window, so the column headings,
+// the industry heading, and the company names stay in view and the horizontal
+// scrollbar sits at the bottom of the screen rather than of the list.
+export default function CompanyTable({ ref, maxHeight, groups, nextEventMap, onOpen }) {
+  // Once columns slide under the company names, an edge marks the names.
+  const [scrolledX, setScrolledX] = useState(false);
   return (
-    <div className="company-table-wrap">
+    <div
+      ref={ref}
+      className="company-table-wrap"
+      data-scrolled-x={scrolledX || undefined}
+      style={maxHeight ? { '--company-table-max-height': `${maxHeight}px` } : undefined}
+      onScroll={event => setScrolledX(event.currentTarget.scrollLeft > 0)}
+    >
       <table className="company-table">
         <thead>
           <tr>
@@ -49,9 +61,11 @@ export default function CompanyTable({ groups, nextEventMap, onOpen }) {
           <tbody key={industry}>
             <tr className="sector-row">
               <th colSpan={11} scope="rowgroup">
-                <span className="industry-swatch" style={{ background: getIndustryConfig(industry).color }} aria-hidden="true" />
-                {industry}
-                <span className="sector-count">{companies.length}社</span>
+                <span className="sector-label">
+                  <span className="industry-swatch" style={{ background: getIndustryConfig(industry).color }} aria-hidden="true" />
+                  {industry}
+                  <span className="sector-count">{companies.length}社</span>
+                </span>
               </th>
             </tr>
             {companies.map(c => {
