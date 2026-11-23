@@ -244,6 +244,14 @@
   color: var(--accent);
 }
 
+/* The buttons always end the first toolbar row at the right. When the
+   filters do not fit beside the title (CompaniesView measures this rather
+   than guess a width, since the counts and industry names vary), they take
+   the next row instead of the buttons taking a row of their own. */
+.view-toolbar[data-filters-below] .filter-bar {
+  order: 1;
+}
+
 /* Phones: the names give up width so the scrolled columns still have room. */
 @media (max-width: 767px) {
   .company-row .col-name {

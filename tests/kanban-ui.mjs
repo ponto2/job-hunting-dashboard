@@ -471,6 +471,47 @@ try {
   await page.setViewportSize({ width: 1440, height: 1000 });
   log('company table keeps headings, industry, and names in view while it scrolls inside the window');
 
+  // The toolbar buttons end the first row at the right whatever the width:
+  // the filters sit before them when they fit beside the title, and take the
+  // next row when they do not. They are never to the right of the buttons.
+  const companyToolbar = page.getByRole('heading', { name: /^企業一覧/ }).locator('..');
+  const toolbarLayout = () => companyToolbar.evaluate(toolbar => {
+    const box = selector => toolbar.querySelector(selector).getBoundingClientRect();
+    const bar = toolbar.getBoundingClientRect();
+    const title = box('.view-title');
+    const buttons = box('.toolbar-actions');
+    const filters = box('.filter-bar');
+    return {
+      atRightEnd: Math.abs(buttons.right - bar.right) < 2,
+      onTitleRow: Math.abs(buttons.top - title.top) < 12,
+      filtersBeforeButtons: filters.right <= buttons.left || filters.top >= buttons.bottom,
+      oneRow: Math.abs(filters.top - title.top) < 12,
+    };
+  });
+  // The width at which everything just fits on one row depends on the counts
+  // and industry names, so find it, then check either side of it as well as
+  // a narrow and a wide window. Measured below the page's maximum width, so
+  // the window and the toolbar differ only by the side padding.
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  const oneRowWidth = await companyToolbar.evaluate(toolbar => {
+    const items = [...toolbar.children].filter(item => item.getClientRects().length > 0);
+    const gap = parseFloat(getComputedStyle(toolbar).columnGap) || 0;
+    const needed = items.reduce((sum, item) => sum + item.getBoundingClientRect().width, 0) + gap * (items.length - 1);
+    return Math.ceil(needed + window.innerWidth - toolbar.clientWidth) + 1;
+  });
+  const layouts = {};
+  for (const width of [1000, 1280, oneRowWidth - 2, oneRowWidth, 1920]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await waitFor(async () => {
+      layouts[width] = await toolbarLayout();
+      return layouts[width].atRightEnd && layouts[width].onTitleRow && layouts[width].filtersBeforeButtons;
+    }, `toolbar buttons at the right end of the first row at ${width}px (one row from ${oneRowWidth}px)`);
+  }
+  assert.equal(layouts[oneRowWidth - 2].oneRow, false, JSON.stringify(layouts));
+  assert.equal(layouts[oneRowWidth].oneRow, true, JSON.stringify(layouts));
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  log('company toolbar buttons stay at the right end of the first row, with the filters before them or below');
+
   // The company form: every field has its label, industries are suggested,
   // and the interest pips are a labelled group.
   await page.getByRole('button', { name: '企業を追加', exact: true }).click();
