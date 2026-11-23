@@ -437,7 +437,7 @@ try {
   // the page itself does not scroll, so the horizontal scrollbar is on screen,
   // and while the table is scrolled down and sideways the headings, the
   // current industry, and the company names stay in view.
-  await page.setViewportSize({ width: 1100, height: 660 });
+  await page.setViewportSize({ width: 1100, height: 680 });
   const tableWrap = page.locator('.company-table-wrap');
   await waitFor(async () => await tableWrap.evaluate(wrap => wrap.getBoundingClientRect().bottom <= window.innerHeight), 'company table fits the window');
   await tableWrap.evaluate(async wrap => {

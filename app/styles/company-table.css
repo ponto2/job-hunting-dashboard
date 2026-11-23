@@ -244,16 +244,6 @@
   color: var(--accent);
 }
 
-/* Between phones and wide screens the filters do not fit beside the title.
-   The buttons stay up beside the title and the filters take the next row,
-   as on phones, rather than the buttons taking a row of their own and
-   leaving the table less height. */
-@media (min-width: 769px) and (max-width: 1439px) {
-  .companies-toolbar .filter-bar {
-    order: 1;
-  }
-}
-
 /* Phones: the names give up width so the scrolled columns still have room. */
 @media (max-width: 767px) {
   .company-row .col-name {

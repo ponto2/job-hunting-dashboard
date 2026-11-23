@@ -115,7 +115,7 @@ export default function CompaniesView({
 
   return (
     <>
-      <div className="view-toolbar companies-toolbar" ref={toolbarRef}>
+      <div className="view-toolbar" ref={toolbarRef}>
         <h1 className="view-title">企業一覧<span className="view-title-count">{filtered.length === companies.length ? `${companies.length}社` : `${filtered.length} / ${companies.length}社`}</span></h1>
         <dl className="view-title-stats">
           <div><dt>進行中</dt><dd>{activeCount}</dd></div>
