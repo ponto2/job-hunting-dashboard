@@ -1,15 +1,39 @@
-/* --- Companies: a table grouped by industry --- */
+/* --- Companies: a table grouped by industry ---
+   The table scrolls inside a box sized to the rest of the window (its
+   height comes from CompaniesView), so the column headings stay on top, the
+   current industry stays under them, the company names stay at the left,
+   and the horizontal scrollbar is always at the bottom of the screen.
+   Stacking, bottom to top: cells, names (1), industry rows (2), headings
+   (3), the 企業 heading (4). */
+
+/* The box ends 20px above the window's bottom (use-pane-height.js); the
+   page keeps only that much below it, so the page itself does not scroll
+   and a wheel over the table never nudges the toolbar. */
+.app-main[data-view='companies'] {
+  padding-bottom: 20px;
+}
+
 .company-table-wrap {
+  --company-thead-height: 32px;
   position: relative;
-  overflow-x: auto;
+  max-height: var(--company-table-max-height, none);
+  overflow: auto;
+  /* A sideways swipe that reaches the edge must not turn into the
+     browser's back gesture. */
+  overscroll-behavior-x: contain;
+  /* Rows reached with Tab stop below the headings, not under them. */
+  scroll-padding-top: calc(var(--company-thead-height) + 36px);
   border-top: 1px solid var(--t3);
   background: var(--panel);
 }
 
+/* Separate borders: collapsed borders belong to the table, so they would
+   stay behind when a sticky cell moves. */
 .company-table {
   width: 100%;
   min-width: 1180px;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: var(--fs-sm);
   font-variant-numeric: tabular-nums;
 }
@@ -17,8 +41,9 @@
 .company-table thead th {
   position: sticky;
   top: 0;
-  z-index: 2;
-  padding: 7px 10px 6px;
+  z-index: 3;
+  height: var(--company-thead-height);
+  padding: 0 10px;
   background: var(--panel);
   border-bottom: 1px solid var(--seg-strong);
   color: var(--t3);
@@ -26,6 +51,12 @@
   font-weight: 600;
   text-align: left;
   white-space: nowrap;
+  vertical-align: middle;
+}
+
+.company-table thead th.col-name {
+  left: 0;
+  z-index: 4;
 }
 
 .company-table th.num,
@@ -33,7 +64,12 @@
   text-align: right;
 }
 
+/* The industry heading waits under the column headings while its rows
+   pass; the next industry slides over it. */
 .sector-row th {
+  position: sticky;
+  top: var(--company-thead-height);
+  z-index: 2;
   padding: 10px 10px 5px;
   background: var(--ground);
   border-bottom: 1px solid var(--seg-strong);
@@ -43,10 +79,18 @@
   text-align: left;
 }
 
+/* The row spans every column; its label stays at the left edge while the
+   columns scroll sideways. */
+.sector-label {
+  position: sticky;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
 .sector-row .industry-swatch {
-  display: inline-block;
   margin-right: 8px;
-  vertical-align: 1px;
 }
 
 .sector-count {
@@ -83,6 +127,11 @@
 
 .company-row:hover .col-name {
   background: var(--row);
+}
+
+/* Columns are sliding under the names: an edge and a soft shadow. */
+.company-table-wrap[data-scrolled-x] .col-name {
+  box-shadow: 1px 0 0 var(--seg-strong), 6px 0 10px -6px rgba(0, 0, 0, 0.7);
 }
 
 /* Name, then the mypage jump right beside it; the name gives way first. */
@@ -193,4 +242,25 @@
 .next-event--soon .next-event-due {
   background: var(--accent-wash);
   color: var(--accent);
+}
+
+/* Between phones and wide screens the filters do not fit beside the title.
+   The buttons stay up beside the title and the filters take the next row,
+   as on phones, rather than the buttons taking a row of their own and
+   leaving the table less height. */
+@media (min-width: 769px) and (max-width: 1439px) {
+  .companies-toolbar .filter-bar {
+    order: 1;
+  }
+}
+
+/* Phones: the names give up width so the scrolled columns still have room. */
+@media (max-width: 767px) {
+  .company-row .col-name {
+    min-width: 0;
+  }
+
+  .company-name-cell {
+    max-width: 136px;
+  }
 }

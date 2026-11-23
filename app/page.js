@@ -466,7 +466,7 @@ export default function DashboardPage() {
         onToggleDone={toggleEventDone}
       />
 
-      <main className="app-main">
+      <main className="app-main" data-view={activeTab}>
       <LoadErrorBanner errors={loadErrors} onRetry={reloadAll} />
 
       <div style={{ display: activeTab === 'companies' ? 'contents' : 'none' }}>
@@ -485,6 +485,7 @@ export default function DashboardPage() {
             setTab('es');
           }}
           onOpenES={companyId => { setEsOpenRequest({ companyId, nonce: Date.now() }); setTab('es'); }}
+          isActive={activeTab === 'companies'}
         />
       </div>
       <div style={{ display: activeTab === 'kanban' ? 'contents' : 'none' }}>

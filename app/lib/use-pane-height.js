@@ -17,7 +17,10 @@ export function usePaneHeight(panelRef, watchRef, isActive, deps = []) {
     const measure = () => {
       const panel = panelRef.current;
       if (!panel) return;
-      const top = Math.max(0, panel.getBoundingClientRect().top);
+      // From the top of the page, not of the window: another tab may have
+      // left the page scrolled, and the panel must fit once it is back at
+      // the top rather than keep the page scrolled.
+      const top = Math.max(0, panel.getBoundingClientRect().top + window.scrollY);
       setHeight(Math.max(MIN_HEIGHT, Math.round(window.innerHeight - top - BOTTOM_ROOM)));
     };
     const frame = requestAnimationFrame(measure);

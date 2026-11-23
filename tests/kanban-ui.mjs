@@ -433,6 +433,44 @@ try {
   assert(tableFit[0] <= tableFit[1], JSON.stringify(tableFit));
   log('the mypage jump sits beside the company name and the table fits without horizontal scroll');
 
+  // In a smaller window the table scrolls inside a box that fits the window:
+  // the page itself does not scroll, so the horizontal scrollbar is on screen,
+  // and while the table is scrolled down and sideways the headings, the
+  // current industry, and the company names stay in view.
+  await page.setViewportSize({ width: 1100, height: 660 });
+  const tableWrap = page.locator('.company-table-wrap');
+  await waitFor(async () => await tableWrap.evaluate(wrap => wrap.getBoundingClientRect().bottom <= window.innerHeight), 'company table fits the window');
+  await tableWrap.evaluate(async wrap => {
+    // Far enough that the industry row's own place has scrolled away.
+    wrap.scrollTop = 40;
+    wrap.scrollLeft = 200;
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  });
+  const pinned = await tableWrap.evaluate(wrap => {
+    const box = wrap.getBoundingClientRect();
+    const headHeight = wrap.querySelector('thead').getBoundingClientRect().height;
+    const at = (x, y) => document.elementFromPoint(box.left + x, box.top + y);
+    return {
+      scrolled: [wrap.scrollTop, wrap.scrollLeft],
+      pageFits: document.scrollingElement.scrollHeight <= window.innerHeight,
+      corner: at(12, headHeight / 2)?.closest('th')?.textContent,
+      heading: Boolean(at(box.width - 30, headHeight / 2)?.closest('thead')),
+      industry: at(16, headHeight + 14)?.closest('.sector-row')?.textContent,
+      name: at(12, headHeight + 54)?.closest('tr.company-row th.col-name')?.textContent,
+      edge: wrap.hasAttribute('data-scrolled-x'),
+    };
+  });
+  assert.deepEqual(pinned.scrolled, [40, 200], JSON.stringify(pinned));
+  assert(pinned.pageFits, JSON.stringify(pinned));
+  assert.equal(pinned.corner, '企業', JSON.stringify(pinned));
+  assert(pinned.heading, JSON.stringify(pinned));
+  assert.match(pinned.industry || '', /^IT・通信/, JSON.stringify(pinned));
+  assert(pinned.name, JSON.stringify(pinned));
+  assert(pinned.edge, JSON.stringify(pinned));
+  await tableWrap.evaluate(wrap => { wrap.scrollTop = 0; wrap.scrollLeft = 0; });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  log('company table keeps headings, industry, and names in view while it scrolls inside the window');
+
   // The company form: every field has its label, industries are suggested,
   // and the interest pips are a labelled group.
   await page.getByRole('button', { name: '企業を追加', exact: true }).click();

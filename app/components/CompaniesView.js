@@ -3,8 +3,9 @@
 import { useToday } from '../lib/use-today';
 import { parseLocalDate } from '@/lib/date';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { STATUSES, parseSalary, parseNum } from '../lib/constants';
+import { usePaneHeight } from '../lib/use-pane-height';
 import { createCompanyActions } from '../lib/company-actions';
 import { buildNextEventMap } from '../lib/board';
 import { getCompanySelections } from '@/lib/selections';
@@ -30,7 +31,11 @@ export default function CompaniesView({
   onDetailRequestDone,
   onAddES,
   onOpenES,
+  isActive = true,
 }) {
+  const toolbarRef = useRef(null);
+  const tableRef = useRef(null);
+
   // --- Filter State ---
   const [filterIndustry, setFilterIndustry] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -100,13 +105,17 @@ export default function CompaniesView({
     return Object.keys(g).sort().map(industry => [industry, g[industry]]);
   }, [filtered]);
 
+  // The table fits the rest of the window and scrolls inside it; it mounts
+  // only when something matches, so it is measured again then.
+  const tableHeight = usePaneHeight(tableRef, toolbarRef, isActive, [filtered.length > 0]);
+
   const addCompany = async (data) => {
     if (await actions.saveCompany(data)) setAddingCompany(false);
   };
 
   return (
     <>
-      <div className="view-toolbar">
+      <div className="view-toolbar companies-toolbar" ref={toolbarRef}>
         <h1 className="view-title">企業一覧<span className="view-title-count">{filtered.length === companies.length ? `${companies.length}社` : `${filtered.length} / ${companies.length}社`}</span></h1>
         <dl className="view-title-stats">
           <div><dt>進行中</dt><dd>{activeCount}</dd></div>
@@ -166,7 +175,7 @@ export default function CompaniesView({
           </div>
         </div>
       ) : (
-        <CompanyTable groups={groups} nextEventMap={nextEventMap} onOpen={setDetailCompanyId} />
+        <CompanyTable ref={tableRef} maxHeight={tableHeight} groups={groups} nextEventMap={nextEventMap} onOpen={setDetailCompanyId} />
       )}
 
       {/* Modals */}
